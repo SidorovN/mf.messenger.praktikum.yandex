@@ -1,0 +1,56 @@
+@import "../../vendor/fonts/font.css";
+@import "../../blocks/sidebar/sidebar.css";
+@import "../../blocks/room/room.css";
+
+.root {
+  margin: 0;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #2E2C2C;
+  color: #E2E0E0;
+  font-family: "Jet Brains", serif;
+}
+
+.chat {
+  display: flex;
+}
+
+.chatlist {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sidebar__link {
+  display: block;
+  width: fit-content;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 12px;
+  margin-bottom: 24px;
+  margin-left: auto;
+  color: #999;
+  text-decoration: none;
+}
+
+.sidebar__input {
+  background: #464545;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  height: 32px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  clip: rect(0 0 0 0)
+}
