@@ -1,4 +1,6 @@
-.room {
+.room-item {
+    text-decoration: none;
+    color: #E2E0E0;
     padding: 12px 0;
     border-bottom: 1px solid #464545;
     display: grid;
@@ -9,7 +11,7 @@
     grid-row-gap: 4px;
 }
 
-.room__avatar {
+.room-item__avatar {
     width: 47px;
     height: 47px;
     background-color: #EFEFEF;
@@ -18,25 +20,25 @@
     grid-row: 1/ span 2;
 }
 
-.room__title {
+.room-item__title {
     margin: 0;
     font-weight: 600;
     font-size: 13px;
     line-height: 13px;
 }
 
-.room__message {
+.room-item__message {
     font-size: 12px;
     line-height: 15px;
 }
 
-.room__date {
+.room-item__date {
     font-weight: 500;
     font-size: 9px;
     line-height: 13px;
 }
 
-.room__notification {
+.room-item__notification {
     width: 20px;
     height: 20px;
     font-size: 11px;

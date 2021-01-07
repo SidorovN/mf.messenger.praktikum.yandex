@@ -1,0 +1,41 @@
+.message {
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  background: #777768;
+  margin-bottom: 10px;
+  max-width: 50%;
+}
+
+.message.message_my {
+  margin-left: auto;
+  border-bottom-right-radius: 0;
+  background-color: #808080;
+}
+
+.message.message_not-my {
+  margin-right: auto;
+  border-bottom-left-radius: 0;
+  background-color: #3369F3;
+}
+
+.message__text {
+  font-size: 12px;
+  line-height: 15px;
+  margin: 0;
+}
+
+.message__time {
+  font-size: 9px;
+  line-height: 9px;
+  color: #999999;
+}
+
+.message__notification {
+  display: inline-block;
+  width: 10px;
+  height: 5px;
+  margin-left: 14px;
+  background-repeat: no-repeat;
+  background-image: url(/media/notification.svg);
+}

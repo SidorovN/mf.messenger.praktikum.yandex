@@ -3,3 +3,31 @@
     border-right: 1px solid #464545;
     padding: 22px 10px 0;
 }
+
+.sidebar__link {
+  display: block;
+  width: fit-content;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 12px;
+  margin-bottom: 24px;
+  margin-left: auto;
+  color: #999;
+  text-decoration: none;
+}
+
+.sidebar__link::after {
+  content: '>';
+  margin-left: 8px;
+}
+
+.sidebar__input {
+  background: #464545;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  height: 32px;
+  width: 100%;
+  box-sizing: border-box;
+}
