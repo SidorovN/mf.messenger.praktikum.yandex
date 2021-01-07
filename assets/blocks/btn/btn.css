@@ -1,0 +1,22 @@
+.btn {
+  padding: 12px;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 11px;
+  text-decoration: none;
+}
+
+.btn_blue {
+  background: #3369F3;
+  color: #E2E0E0;
+}
+
+.btn_white {
+  color: #3369F3;
+  background: #EFEFEF;
+}

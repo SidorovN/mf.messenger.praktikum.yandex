@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/pages/chat/chat-room.css">
+    <title>Чат</title>
+</head>
+<body class="root chat room">
+<aside class="sidebar">
+    <nav class="sidebar__navigation">
+        <a href="/profile" class="sidebar__link">Профиль</a>
+        <form class="sidebar__search">
+            <label class="sidebar__label">
+                <input type="text" class="sidebar__input">
+                <span class="visually-hidden">Поиск</span>
+            </label>
+        </form>
+    </nav>
+    <nav class="room-list">
+        <a href="/chat/id" class="room-item">
+            <img class="room-item__avatar" src="https://natalyland.ru/wp-content/uploads/e/1/9/e19f5d19fca32c1f6ddc27ad19054a9a.jpg" alt="Аватар">
+            <h3 class="room-item__title">Андрей</h3>
+            <time class="room-item__date">10:49</time>
+            <span class="room-item__message">Изображение</span>
+            <span class="room-item__notification">2</span>
+        </a>
+    </nav>
+</aside>
+<main class="chat-no-room">
+    <p class="chat-no-room__title">Выберите чат чтобы отправить сообщение</p>
+</main>
+</body>
+</html>

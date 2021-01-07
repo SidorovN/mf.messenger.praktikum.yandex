@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/pages/profile/profile.css">
+    <title>Войти</title>
+</head>
+<body class="root profile">
+<form class="profile__form js-form">
+    <h1 class="title profile__title">Вход</h1>
+    <div class="input profile__input">
+        <label class="input__label">
+            <input type="text" class="input__input js-input" name="profile" placeholder="Логин">
+            <span class="input__label-text">Логин</span>
+        </label>
+        <span class="input__error-message js-error"></span>
+    </div>
+
+    <div class="input profile__input">
+        <label class="input__label">
+            <input type="password" class="input__input js-input" name="password" placeholder="Пароль">
+            <span class="input__label-text">Пароль</span>
+        </label>
+        <span class="input__error-message js-error"></span>
+    </div>
+
+    <button class="btn btn_blue profile__btn">Авторизоваться</button>
+    <a href="/signup" class="btn btn_white profile__btn">Нет аккаунта?</a>
+</form>
+<script src="/components/FormValidator.js"></script>
+<script src="/pages/profile/profile.js"></script>
+</body>
+</html>
