@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/pages/profile/profile.css">
+  <title>Войти</title>
+</head>
+<body class="root profile">
+<aside class="profile__aside">
+  <a href="/chat" class="profile__back-link" aria-label="Назад"></a>
+</aside>
+<main class="profile__main">
+<button class="profile__avatar js-open-avatar-popup" aria-label="Поменять аватар"></button>
+
+<h1 class="title title_size_m profile__title js-title">Иван</h1>
+<form class="profile__form js-user-form">
+
+
+  <div class="profile-input profile__input">
+    <label class="profile-input__label">
+      <input type="text" class="profile-input__input js-input" name="email" placeholder="Почта">
+      <span class="profile-input__label-text">Почта</span>
+    </label>
+    <span class="profile-input__error-message js-error"></span>
+  </div>
+
+  <div class="profile-input profile__input">
+    <label class="profile-input__label">
+      <input type="text" class="profile-input__input js-input js-file-input" name="profile" placeholder="Логин">
+      <span class="profile-input__label-text">Логин</span>
+    </label>
+    <span class="profile-input__error-message js-error"></span>
+  </div>
+
+  <div class="profile-input profile__input">
+    <label class="profile-input__label">
+      <input type="text" class="profile-input__input js-input" name="first_name" placeholder="Имя">
+      <span class="profile-input__label-text">Имя</span>
+    </label>
+    <span class="profile-input__error-message js-error"></span>
+  </div>
+
+  <div class="profile-input profile__input">
+    <label class="profile-input__label">
+      <input type="text" class="profile-input__input js-input" name="second_name" placeholder="Фамилия">
+      <span class="profile-input__label-text">Фамилия</span>
+    </label>
+    <span class="profile-input__error-message js-error"></span>
+  </div>
+
+  <div class="profile-input profile__input">
+    <label class="profile-input__label">
+      <input type="text" class="profile-input__input js-input" name="display_name" placeholder="Имя в чате">
+      <span class="profile-input__label-text">Имя в чате</span>
+    </label>
+    <span class="profile-input__error-message js-error"></span>
+  </div>
+
+  <div class="profile-input profile__input">
+    <label class="profile-input__label">
+      <input type="tel" class="profile-input__input js-input" name="phone" placeholder="Телефон">
+      <span class="profile-input__label-text">Телефон</span>
+    </label>
+    <span class="profile-input__error-message js-error"></span>
+  </div>
+
+  <button class="btn btn_blue profile__btn profile__btn_hidden js-user-form-btn">Сохранить</button>
+  <div class="profile__changes profile__changes_active js-user-changes">
+    <div class="profile__change">
+      <button type="button" class="profile__link js-edit-user">
+        Изменить данные
+      </button>
+    </div>
+
+    <div class="profile__change js-edit-password">
+      <button type="button" class="profile__link">
+        Изменить пароль
+      </button>
+    </div>
+
+    <div class="profile__change">
+      <a href="/login" class="profile__link profile__link_red">
+        Выйти
+      </a>
+    </div>
+  </div>
+</form>
+
+
+<div class="popup popup_with_overlay profile__popup js-avatar-popup">
+  <form class="popup__content js-avatar-form">
+    <h3 class="title title_size_s popup__title">Загрузите файл</h3>
+    <label class="popup__label popup__label_file">
+      <input type="file" class="popup__file-input js-input" required name="avatar">
+      <span class="popup__file-label-text">Выбрать файл на компьютере</span>
+    </label>
+    <button class="btn btn_blue">Поменять</button>
+    <span class="js-error-message"></span>
+  </form>
+</div>
+
+
+
+  <form class="profile__form profile__form_hidden js-password-form">
+    <div class="profile-input profile__input">
+      <label class="profile-input__label">
+        <input type="password" class="profile-input__input js-input" name="oldPassword" placeholder="Старый пароль">
+        <span class="profile-input__label-text">Старый пароль</span>
+      </label>
+      <span class="profile-input__error-message js-error"></span>
+    </div>
+
+    <div class="profile-input profile__input">
+      <label class="profile-input__label">
+        <input type="password" class="profile-input__input js-input" name="newPassword" placeholder="Новый пароль">
+        <span class="profile-input__label-text">Новый пароль</span>
+      </label>
+      <span class="profile-input__error-message js-error"></span>
+    </div>
+
+    <div class="profile-input profile__input">
+      <label class="profile-input__label">
+        <input type="password" class="profile-input__input js-input" name="newPassword" placeholder="Повторите новый пароль">
+        <span class="profile-input__label-text">Повторите новый пароль</span>
+      </label>
+      <span class="profile-input__error-message js-error"></span>
+    </div>
+
+    <button class="btn btn_blue profile__btn">Сохранить</button>
+  </form>
+
+</main>
+<script src="/components/BaseComponent.js"></script>
+<script src="/components/Form.js"></script>
+<script src="/components/Popup.js"></script>
+<script src="/components/PopupWithOverlay.js"></script>
+<script src="/pages/profile/profile.js"></script>
+
+</body>
+</html>

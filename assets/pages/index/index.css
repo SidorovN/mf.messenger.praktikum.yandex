@@ -1,0 +1,18 @@
+@import "../../common/common.css";
+@import "../../vendor/fonts/fonts.css";
+@import "../../blocks/sidebar/sidebar.css";
+@import "../../blocks/room-item/room-item.css";
+@import "../../blocks/root/root.css";
+@import "../../blocks/chat-room/chat-room.css";
+
+
+.chat {
+  display: flex;
+  height: 100vh;
+}
+
+
+
+
+
+

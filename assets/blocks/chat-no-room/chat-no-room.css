@@ -1,0 +1,16 @@
+.chat-no-room {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.chat-no-room__title {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 12px;
+  text-align: center;
+  color: #999999;
+}
+
+

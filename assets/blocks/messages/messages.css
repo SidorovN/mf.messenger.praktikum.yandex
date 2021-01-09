@@ -1,0 +1,10 @@
+.messages {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  overflow: auto;
+  flex-grow: 1;
+  flex-direction: column-reverse;
+}
