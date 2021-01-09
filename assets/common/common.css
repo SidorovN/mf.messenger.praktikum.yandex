@@ -6,6 +6,10 @@ html {
   box-sizing: inherit;
 }
 
+button:hover,a:hover {
+  opacity: .7;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;

@@ -1,7 +1,7 @@
-const loginForm = new FormValidator({
-  form: document.querySelector('.js-form'),
-  onSubmit: (e, values) => {
-    console.dir(values);
+const loginForm = new Form({
+  element: document.querySelector('.js-form'),
+  onSubmit(e) {
+    console.dir(this.getValues());
   },
 });
 
