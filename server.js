@@ -35,7 +35,6 @@ router.get('/chat', (req, res) => {
 });
 
 router.get('/chat/:id', (req, res) => {
-  console.log('/chat/:id');
   res.sendFile(path.join(staticPath, 'chat', 'id.html'));
 });
 

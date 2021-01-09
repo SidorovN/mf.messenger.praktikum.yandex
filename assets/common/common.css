@@ -1,9 +1,15 @@
+@import "/vendor/normalize.css";
+
 html {
   box-sizing: border-box;
 }
 
 *,*::after,*::before {
   box-sizing: inherit;
+}
+
+button:hover,a:hover {
+  opacity: .7;
 }
 
 .visually-hidden {

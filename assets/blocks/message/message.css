@@ -35,7 +35,7 @@
   display: inline-block;
   width: 10px;
   height: 5px;
-  margin-left: 14px;
+  margin-left: calc(100% - 38px);
   background-repeat: no-repeat;
   background-image: url(/media/notification.svg);
 }

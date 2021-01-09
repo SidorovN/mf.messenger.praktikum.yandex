@@ -1,5 +1,6 @@
-class Popup {
+class Popup extends BaseComponent {
   constructor({ close, element, open }) {
+    super({ element });
     this.element = element;
   }
 
