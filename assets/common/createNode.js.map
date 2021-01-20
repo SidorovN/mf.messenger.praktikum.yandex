@@ -1,0 +1,1 @@
+{"version":3,"file":"createNode.js","sourceRoot":"","sources":["createNode.ts"],"names":[],"mappings":"AAAA,SAAS,UAAU,CAAC,IAAY;IAC5B,MAAM,QAAQ,GAAG,QAAQ,CAAC,aAAa,CAAC,UAAU,CAAC,CAAC;IACpD,QAAQ,CAAC,SAAS,GAAG,IAAI,CAAC;IAC1B,OAAO,QAAQ,CAAC,OAAO,CAAC;AAC5B,CAAC"}
