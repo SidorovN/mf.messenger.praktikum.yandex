@@ -2,75 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/pages/login/login.css">
+    <link rel="stylesheet" href="/blocks/login/login.css">
     <title>Войти</title>
 </head>
-<body class="root login">
-<form class="login__form js-form">
-
-    <h1 class="title login__title">Регистрация</h1>
-
-    <div class="input login__input">
-        <label class="input__label">
-            <input type="text" class="input__input js-input" name="email" placeholder="Почта">
-            <span class="input__label-text">Почта</span>
-        </label>
-        <span class="input__error-message js-error"></span>
-    </div>
-
-    <div class="input login__input">
-        <label class="input__label">
-            <input type="text" class="input__input js-input" name="login" placeholder="Логин">
-            <span class="input__label-text">Логин</span>
-        </label>
-        <span class="input__error-message js-error"></span>
-    </div>
-
-    <div class="input login__input">
-        <label class="input__label">
-            <input type="text" class="input__input js-input" name="first_name" placeholder="Имя">
-            <span class="input__label-text">Имя</span>
-        </label>
-        <span class="input__error-message js-error"></span>
-    </div>
-
-    <div class="input login__input">
-        <label class="input__label">
-            <input type="text" class="input__input js-input" name="second_name" placeholder="Фамилия">
-            <span class="input__label-text">Фамилия</span>
-        </label>
-        <span class="input__error-message js-error"></span>
-    </div>
-
-    <div class="input login__input">
-        <label class="input__label">
-            <input type="tel" class="input__input js-input" name="phone" placeholder="Телефон">
-            <span class="input__label-text">Телефон</span>
-        </label>
-        <span class="input__error-message js-error"></span>
-    </div>
-
-    <div class="input login__input">
-        <label class="input__label">
-            <input type="password" class="input__input js-input" name="password" placeholder="Пароль">
-            <span class="input__label-text">Пароль</span>
-        </label>
-        <span class="input__error-message js-error"></span>
-    </div>
-
-    <div class="input login__input">
-        <label class="input__label">
-            <input type="password" class="input__input js-input" name="password" placeholder="Пароль (ещё раз)">
-            <span class="input__label-text">Пароль (ещё раз)</span>
-        </label>
-        <span class="input__error-message js-error"></span>
-    </div>
-
-    <button class="btn btn_blue login__btn">Зарегистрироваться</button>
-    <a href="/login" class="btn btn_white login__btn">Войти</a>
-</form>
-<script src="/components/Block.ts"></script>
-<script src="/components/Form.js"></script>
-<script src="/pages/login/login.js"></script>
+<body>
+<div class="root login" id="page">
+</div>
+<script src="/pages/signup/signup.js" type="module"></script>
 </body>
 </html>

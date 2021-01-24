@@ -1,6 +1,10 @@
 import {EventBus} from "./EventBus.js";
 
-export class Block {
+interface IBlockProps {
+    [key: string]: any;
+}
+
+export abstract class Block {
     static EVENTS = {
         INIT: "init",
         FLOW_CDM: "flow:component-did-mount",
@@ -10,17 +14,24 @@ export class Block {
 
     _element = null;
     _meta = null;
-    private _eventBus: () => EventBus;
-    protected props: object;
+    _eventBus: () => EventBus;
+    props: IBlockProps;
+    tmpl: string;
+    children = [];
+    private fragment: DocumentFragment;
 
-    constructor(tagName = "div", props = {}) {
+    constructor(tagName:string = "div", config:IBlockProps, tmpl: string) {
         const eventBus = new EventBus();
         this._meta = {
             tagName,
-            props
+            props: config.props,
+            classes: config.classes,
+            attrs: config.attrs
         };
 
-        this.props = this._makePropsProxy(props);
+        this.tmpl = tmpl
+        this.props = this._makePropsProxy(config.props);
+        this.fragment = document.createDocumentFragment()
         this._eventBus = () => eventBus;
         this._registerEvents(eventBus);
         eventBus.emit(Block.EVENTS.INIT);
@@ -34,8 +45,15 @@ export class Block {
     }
 
     _createResources() {
-        const {tagName} = this._meta;
+        const {tagName,classes,attrs} = this._meta;
         this._element = this._createDocumentElement(tagName);
+
+        if (classes) {
+            this._element.classList.add(...classes)
+        }
+        if(attrs) {
+            Object.keys(attrs)?.forEach(attr => this._element.setAttribute(attr, attrs[attr]))
+        }
     }
 
     init() {
@@ -44,22 +62,21 @@ export class Block {
     }
 
     private _componentDidMount() {
-        // this.componentDidMount();
+        this.componentDidMount();
         this._eventBus().emit(Block.EVENTS.FLOW_RENDER)
     }
 
     // Может переопределять пользователь, необязательно трогать
-    componentDidMount(oldProps) {
+    componentDidMount() {
     }
 
     private _componentDidUpdate(oldProps, newProps) {
-        const response = this.componentDidUpdate(oldProps, newProps);
-        if (response) this._render()
+       this._render()
+       this.componentDidUpdate(oldProps, newProps);
     }
 
-    // Может переопределять пользователь, необязательно трогать
     componentDidUpdate(oldProps, newProps) {
-        return true;
+
     }
 
     setProps = nextProps => {
@@ -77,16 +94,15 @@ export class Block {
     private _render() {
         const block = this.render()
 
-        console.log(block)
-        // Этот небезопасный метод для упрощения логики
-        // Используйте шаблонизатор из npm или напишите свой безопасный
-        // Нужно не в строку компилировать (или делать это правильно),
-        // либо сразу в DOM-элементы возвращать из compile DOM-ноду
+
         this._element.innerHTML = block;
+
+        this.children.forEach(child=>this.fragment.append(child))
+        this._element.appendChild(this.fragment)
     }
 
-    // Может переопределять пользователь, необязательно трогать
-    render() {
+    render():string {
+        return ''
     }
 
     getContent() {
@@ -94,16 +110,12 @@ export class Block {
     }
 
     private _makePropsProxy = (props) => {
-        // Можно и так передать this
-        // Такой способ больше не применяется с приходом ES6+
         const self = this;
-
         return new Proxy(props, {
             set(target, prop, value) {
                 target[prop] = value
                 self._eventBus().emit(Block.EVENTS.FLOW_CDU);
 
-                console.log(target, prop, value)
                 return value
             },
 
@@ -114,15 +126,23 @@ export class Block {
     }
 
     private _createDocumentElement(tagName) {
-        // Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
         return document.createElement(tagName);
     }
 
-    show() {
-        this._element.style.display = 'block'
+    appendChild(node) {
+        this.children.push(node)
+        this._element.appendChild(node)
     }
 
-    hide() {
-        this._element.style.display = 'none'
+    show=()=> {
+        this._element.classList.remove('visually-hidden')
+    }
+
+    hide=()=> {
+        this._element.classList.add('visually-hidden')
+    }
+
+    toggle=()=> {
+        this._element.classList.toggle('visually-hidden')
     }
 }

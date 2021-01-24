@@ -1,8 +1,9 @@
 import { EventBus } from './EventBus.js';
 export class Block {
-  constructor(tagName = 'div', props = {}) {
+  constructor(tagName = 'div', config, tmpl) {
     this._element = null;
     this._meta = null;
+    this.children = [];
     this.setProps = nextProps => {
       if (!nextProps) {
         return;
@@ -10,14 +11,11 @@ export class Block {
       this.props = Object.assign(Object.assign({}, this.props), nextProps);
     };
     this._makePropsProxy = props => {
-      // Можно и так передать this
-      // Такой способ больше не применяется с приходом ES6+
       const self = this;
       return new Proxy(props, {
         set(target, prop, value) {
           target[prop] = value;
           self._eventBus().emit(Block.EVENTS.FLOW_CDU);
-          console.log(target, prop, value);
           return value;
         },
         deleteProperty(target, prop) {
@@ -25,12 +23,25 @@ export class Block {
         },
       });
     };
+    this.show = () => {
+      this._element.classList.remove('visually-hidden');
+    };
+    this.hide = () => {
+      this._element.classList.add('visually-hidden');
+    };
+    this.toggle = () => {
+      this._element.classList.toggle('visually-hidden');
+    };
     const eventBus = new EventBus();
     this._meta = {
       tagName,
-      props,
+      props: config.props,
+      classes: config.classes,
+      attrs: config.attrs,
     };
-    this.props = this._makePropsProxy(props);
+    this.tmpl = tmpl;
+    this.props = this._makePropsProxy(config.props);
+    this.fragment = document.createDocumentFragment();
     this._eventBus = () => eventBus;
     this._registerEvents(eventBus);
     eventBus.emit(Block.EVENTS.INIT);
@@ -42,53 +53,54 @@ export class Block {
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
   }
   _createResources() {
-    const { tagName } = this._meta;
+    var _a;
+    const { tagName, classes, attrs } = this._meta;
     this._element = this._createDocumentElement(tagName);
+    if (classes) {
+      this._element.classList.add(...classes);
+    }
+    if (attrs) {
+      (_a = Object.keys(attrs)) === null || _a === void 0
+        ? void 0
+        : _a.forEach(attr => this._element.setAttribute(attr, attrs[attr]));
+    }
   }
   init() {
     this._createResources();
     this._eventBus().emit(Block.EVENTS.FLOW_CDM);
   }
   _componentDidMount() {
-    // this.componentDidMount();
+    this.componentDidMount();
     this._eventBus().emit(Block.EVENTS.FLOW_RENDER);
   }
   // Может переопределять пользователь, необязательно трогать
-  componentDidMount(oldProps) {}
+  componentDidMount() {}
   _componentDidUpdate(oldProps, newProps) {
-    const response = this.componentDidUpdate(oldProps, newProps);
-    if (response) this._render();
+    this._render();
+    this.componentDidUpdate(oldProps, newProps);
   }
-  // Может переопределять пользователь, необязательно трогать
-  componentDidUpdate(oldProps, newProps) {
-    return true;
-  }
+  componentDidUpdate(oldProps, newProps) {}
   get element() {
     return this._element;
   }
   _render() {
     const block = this.render();
-    console.log(block);
-    // Этот небезопасный метод для упрощения логики
-    // Используйте шаблонизатор из npm или напишите свой безопасный
-    // Нужно не в строку компилировать (или делать это правильно),
-    // либо сразу в DOM-элементы возвращать из compile DOM-ноду
     this._element.innerHTML = block;
+    this.children.forEach(child => this.fragment.append(child));
+    this._element.appendChild(this.fragment);
   }
-  // Может переопределять пользователь, необязательно трогать
-  render() {}
+  render() {
+    return '';
+  }
   getContent() {
     return this._element;
   }
   _createDocumentElement(tagName) {
-    // Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
     return document.createElement(tagName);
   }
-  show() {
-    this._element.style.display = 'block';
-  }
-  hide() {
-    this._element.style.display = 'none';
+  appendChild(node) {
+    this.children.push(node);
+    this._element.appendChild(node);
   }
 }
 Block.EVENTS = {
