@@ -27,22 +27,22 @@ export abstract class Block {
     _element:HTMLElement|null = null;
     _meta:IMeta|null = null;
     _eventBus: () => EventBus;
-    props: IBlockProps;
-    tmpl: string;
+    props: IBlockProps = {};
+    tmpl: string = '';
     children = [];
     private fragment: DocumentFragment;
 
-    constructor(tagName:string = "div", config:IBlockProps, tmpl: string, children=[]) {
+    constructor(tagName:string = "div", config:IBlockProps, tmpl: string) {
         const eventBus = new EventBus();
         this._meta = {
             tagName,
             props: config.props,
             classes: config.classes,
-            attrs: config.attrs
+            attrs: config.attrs,
         };
 
         this.tmpl = tmpl
-        this.props = this._makePropsProxy(config.props);
+        this.props = this._makePropsProxy(config.props || {});
         this.fragment = document.createDocumentFragment()
         this._eventBus = () => eventBus;
         this._registerEvents(eventBus);

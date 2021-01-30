@@ -1,8 +1,6 @@
 import {Component} from "../../components/Component.js";
 import {Button} from "../../components/Button.js";
 import {Form} from "../../components/Form.js";
-import {tmpl as sidebarTmpl} from "../../blocks/sidebar/sidebar.tmpl.js"
-import {tmpl as roomListTmpl} from "../../blocks/room-list/roomList.tmpl.js"
 import {tmpl as chatRoomTmpl} from "../../blocks/chat-room/chatRoom.tmpl.js"
 import {tmpl as chatRoomHeaderTmpl} from "../../blocks/chat-room-header/chatRoomHeader.tmpl.js"
 import {tmpl as chatFormPopupTmpl} from "../../blocks/chat-room-form/chatRoomFormPopup.tmpl.js"
@@ -11,6 +9,7 @@ import {tmpl as messagesTmpl} from "../../blocks/messages/messages.tmpl.js"
 import {tmpl as popupTmpl} from "../../blocks/popup/popup.tmpl.js"
 import {render} from "../../common/render.js";
 import {EventBus} from "../../components/EventBus.js";
+import {chatLayout} from "../../layouts/chat.js";
 
 const eventBus = new EventBus()
 
@@ -19,47 +18,10 @@ const addUserProps = {
     btnText: 'Добавить'
 }
 
-
 const removeUserProps = {
     title: 'Удалить пользователя',
     btnText: 'Удалить'
 }
-
-
-const sideBar = new Component('aside', {
-    props: {},
-    classes: ['sidebar'],
-}, sidebarTmpl);
-
-const roomList = new Component('nav', {
-    props: {
-        rooms: [
-            {
-                id: 'id.html',
-                avatar: 'https://natalyland.ru/wp-content/uploads/e/1/9/e19f5d19fca32c1f6ddc27ad19054a9a.jpg',
-                title: 'Андрей',
-                time: '10:49',
-                message: 'Изображение',
-                notification: '2'
-            }, {
-                id: 'id.html',
-                avatar: 'https://natalyland.ru/wp-content/uploads/e/1/9/e19f5d19fca32c1f6ddc27ad19054a9a.jpg',
-                title: 'Андрей',
-                time: '10:49',
-                message: 'Изображение',
-                notification: '2'
-            }, {
-                id: 'id.html',
-                avatar: 'https://natalyland.ru/wp-content/uploads/e/1/9/e19f5d19fca32c1f6ddc27ad19054a9a.jpg',
-                title: 'Андрей',
-                time: '10:49',
-                message: 'Изображение',
-                notification: '2'
-            },
-        ]
-    },
-    classes: ['room-list'],
-}, roomListTmpl);
 
 const chatRoom = new Component('main', {
     props: {},
@@ -242,7 +204,8 @@ eventBus.on('toggleUserPopup', (props)=> {
 
 
 
-render(sideBar, roomList);
+render(chatLayout, chatRoom);
+
 render(chatRoom, chatRoomHeader);
 render(chatRoom, messages);
 render(chatRoom, chatFrom);
@@ -255,7 +218,7 @@ render(headerPopup, addUserBtn);
 render(headerPopup, removeUserBtn);
 render(chatRoomHeader, headerPopup);
 render(userPopup, userPopupForm);
+
 render(document.querySelector('#page'), userPopup);
-render(document.querySelector('#page'), sideBar);
-render(document.querySelector('#page'), chatRoom);
+render(document.querySelector('#page'), chatLayout);
 

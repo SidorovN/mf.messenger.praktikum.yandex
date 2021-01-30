@@ -13,7 +13,7 @@ interface IBlockConfig extends IMeta {
 
 
 export class Component extends Block {
-    constructor(tagName,config:IBlockConfig,tmpl) {
+    constructor(tagName,config:IBlockConfig={},tmpl='') {
         super(tagName, config,tmpl);
         if(config.on) {
             this.setOn(config.on)

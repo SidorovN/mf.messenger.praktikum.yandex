@@ -1,5 +1,3 @@
-import { Form } from "../components/Form.js";
-import {tmpl as formTmpl} from "../blocks/login/login.tmpl.js"
 import {Button} from "../components/Button.js";
 import {Component} from "../components/Component.js";
 import {tmpl as btnTmpl} from "../blocks/btn/btn.tmp.js"
@@ -7,8 +5,9 @@ import {tmpl as sidebarTmpl} from "../blocks/sidebar/sidebar.tmpl.js"
 import {tmpl as roomListTmpl} from "../blocks/room-list/roomList.tmpl.js"
 import {render} from "../common/render.js";
 
-
-export function chatLayout() {
+export const chatLayout = new Component('div',{
+    classes: ['root','chat']
+})
 
     const sideBar = new Component('aside', {
         props: {},
@@ -62,8 +61,5 @@ export function chatLayout() {
         },
     }, btnTmpl)
 
-    render(document.querySelector('body'), sideBar);
-    render(sideBar.getContent(), roomList);
-// render(form.getContent(), loginBtn);
-// render(form.getContent(), {form});
-}
+    render(chatLayout, sideBar);
+    render(sideBar, roomList)
