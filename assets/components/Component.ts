@@ -1,8 +1,19 @@
-import {Block} from "./Block.js";
+import {Block, IMeta} from "./Block.js";
 import {compile} from "../common/templator.js";
 
+interface IListener {
+    event: string;
+    callback: any;
+}
+
+interface IBlockConfig extends IMeta {
+    emitter?: IListener[];
+    on?: [string,Function]
+}
+
+
 export class Component extends Block {
-    constructor(tagName,config,tmpl) {
+    constructor(tagName,config:IBlockConfig,tmpl) {
         super(tagName, config,tmpl);
         if(config.on) {
             this.setOn(config.on)
@@ -12,8 +23,10 @@ export class Component extends Block {
         }
     }
 
-    setListeners(listeners: []) {
-        listeners.forEach((listener: { event: string,callback:void })=>this._element.addEventListener(listener.event,listener.callback))
+    setListeners(listeners: IListener[]) {
+        listeners.forEach(({ event,callback})=>this._element.addEventListener(event,callback)
+        )
+        console.dir(this._element)
     }
 
     setOn(on) {

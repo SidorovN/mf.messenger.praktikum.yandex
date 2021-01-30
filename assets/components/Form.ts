@@ -1,6 +1,7 @@
-import {Block} from "./Block.js";
+import {Block,IMeta} from "./Block.js";
 import { compile } from "../common/templator.js";
 import {Component} from "./Component.js";
+
 
 const VALIDATE_CONFIG = {
     name: {
@@ -9,7 +10,7 @@ const VALIDATE_CONFIG = {
     },
     email: {
         regexp: /^[A-Za-z0-9,.,-]{1,}[@]([A-Za-z0-9,.,-]{1,}[.][A-Za-z]{1,}){1,2}$/g,
-        message: 'Проверьте правильность номера',
+        message: 'Проверьте правильность email',
     },
     tel: {
         regexp: /^(\+7|8)(([(]9\d{2}[)])|(\s?9\d{2}))(\s|[-])?(\d{3})[-]?(\d{2})[-]?(\d{2})$/g,
@@ -20,14 +21,18 @@ const VALIDATE_CONFIG = {
         message: 'Пароль должен быть от 8 до 30 символов'
     }
 }
+interface IFormConfig extends IMeta {
+    onSubmit?: Function;
+    emitValidity?: Function;
+}
 
 export class Form extends Component {
-    private inputs: any[];
-    private errors: any[];
-    private onSubmit: any;
-    private emitValidity: any;
+    private inputs: HTMLInputElement[];
+    private errors: HTMLElement[];
+    private onSubmit: Function;
+    private emitValidity: Function;
 
-    constructor(config: any,tmpl) {
+    constructor(config: IFormConfig,tmpl:string) {
         super("form", config,tmpl);
         this.onSubmit = config.onSubmit
         this.emitValidity = config.emitValidity
@@ -52,9 +57,9 @@ export class Form extends Component {
     };
 
     initForm():void {
-        this.inputs = [...this._element.querySelectorAll('input')];
-        this.errors = [...this._element.querySelectorAll('.js-error')];
-        this._element.setAttribute('novalidate', true);
+        this.inputs = Array.from(this._element.querySelectorAll('input'));
+        this.errors = Array.from(this._element.querySelectorAll('.js-error'));
+        this._element.setAttribute('novalidate', 'true');
 
         this.setListeners();
     };
@@ -72,7 +77,7 @@ export class Form extends Component {
         return this.inputs.every(input => this.checkInputValidity(input))
     }
 
-    checkInputValidity(input):boolean {
+    checkInputValidity(input:HTMLInputElement):boolean {
 
         const regExp = VALIDATE_CONFIG[input.type]?.regexp
 
@@ -80,12 +85,11 @@ export class Form extends Component {
             this.emitValidity(true,input.name,'')
             return true
         }
-        else {
-            const errorMessage = this.getErrorMessage(input.type)
 
-            this.emitValidity(false,input.name,errorMessage)
-            return false
-        }
+        const errorMessage = this.getErrorMessage(input.type)
+
+        this.emitValidity(false,input.name,errorMessage)
+        return false
 
     }
 
@@ -98,13 +102,13 @@ export class Form extends Component {
         return values;
     }
 
-    getErrorMessage(type):void {
+    getErrorMessage(type:string):void {
         return VALIDATE_CONFIG[type].message
     }
 
     disableInputs():void {
         this.inputs.forEach(el => {
-            el.setAttribute('disabled', true);
+            el.setAttribute('disabled', 'true');
         });
     }
 

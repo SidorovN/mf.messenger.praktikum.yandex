@@ -79,7 +79,7 @@ const openHeaderPopupBtn = new Button('button', {
     props: {},
     emitter: [{
         event: 'click',
-        callback: () => eventBus.emit('toggleHeaderPopup')
+        callback: (e) => eventBus.emit('toggleHeaderPopup')
     }],
     classes: ['chat-room__detail', 'chat-room__detail_active', 'js-open-room-popup'],
 }, '')
@@ -97,7 +97,7 @@ const addUserBtn = new Button('button', {
     },
     emitter: [{
         event: 'click',
-        callback: () => eventBus.emit('toggleUserPopup',addUserProps)
+        callback: (e) => eventBus.emit('toggleUserPopup',addUserProps)
     }],
     classes: ['chat-room__popup-row'],
 })
@@ -120,7 +120,7 @@ const removeUserBtn = new Button('button', {
     },
     emitter: [{
         event: 'click',
-        callback: () => eventBus.emit('toggleUserPopup',removeUserProps)
+        callback: (e) => eventBus.emit('toggleUserPopup',removeUserProps)
     }],
     classes: ['chat-room__popup-row'],
 })
@@ -192,7 +192,7 @@ const openFormPopupBtn = new Button('button', {
     },
     emitter: [{
         event: 'click',
-        callback: () => eventBus.emit('toggleAttachPopup')
+        callback: (e) => eventBus.emit('toggleAttachPopup')
     }],
     classes: ['chat-room__form-attach-btn', 'chat-room__form-attach-btn_active', 'js-open-attach'],
 })

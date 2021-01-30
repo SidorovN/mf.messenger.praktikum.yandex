@@ -39,8 +39,8 @@ const submitBtn = new Button('button',{
         text: 'Авторизоваться'
     },
     classes: ['btn','btn_blue','login__btn'],
-    attrs: {}
-},btnTmpl)
+    }
+,btnTmpl)
 
 const loginBtn = new Button('a',{
     props: {
