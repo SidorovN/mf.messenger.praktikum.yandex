@@ -4,6 +4,18 @@ interface IBlockProps {
     [key: string]: any;
 }
 
+interface IBlockAttrs {
+    [key: string]: string;
+}
+
+
+export interface IMeta {
+    tagName?:string;
+    props?: IBlockProps;
+    classes?: string[];
+    attrs?: IBlockAttrs;
+}
+
 export abstract class Block {
     static EVENTS = {
         INIT: "init",
@@ -12,15 +24,15 @@ export abstract class Block {
         FLOW_RENDER: "flow:render"
     };
 
-    _element = null;
-    _meta = null;
+    _element:HTMLElement|null = null;
+    _meta:IMeta|null = null;
     _eventBus: () => EventBus;
     props: IBlockProps;
     tmpl: string;
     children = [];
     private fragment: DocumentFragment;
 
-    constructor(tagName:string = "div", config:IBlockProps, tmpl: string) {
+    constructor(tagName:string = "div", config:IBlockProps, tmpl: string, children=[]) {
         const eventBus = new EventBus();
         this._meta = {
             tagName,
@@ -37,14 +49,14 @@ export abstract class Block {
         eventBus.emit(Block.EVENTS.INIT);
     }
 
-    _registerEvents(eventBus) {
+    _registerEvents(eventBus):void {
         eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
         eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
         eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
         eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
     }
 
-    _createResources() {
+    _createResources():void {
         const {tagName,classes,attrs} = this._meta;
         this._element = this._createDocumentElement(tagName);
 
@@ -56,12 +68,12 @@ export abstract class Block {
         }
     }
 
-    init() {
+    init():void {
         this._createResources();
         this._eventBus().emit(Block.EVENTS.FLOW_CDM)
     }
 
-    private _componentDidMount() {
+    private _componentDidMount():void {
         this.componentDidMount();
         this._eventBus().emit(Block.EVENTS.FLOW_RENDER)
     }
@@ -87,11 +99,11 @@ export abstract class Block {
         this.props = {...this.props,...nextProps};
     };
 
-    get element() {
+    get element():HTMLElement {
         return this._element;
     }
 
-    private _render() {
+    private _render():void {
         const block = this.render()
 
 
@@ -105,11 +117,11 @@ export abstract class Block {
         return ''
     }
 
-    getContent() {
+    getContent():HTMLElement {
         return this._element;
     }
 
-    private _makePropsProxy = (props) => {
+    private _makePropsProxy = (props):object => {
         const self = this;
         return new Proxy(props, {
             set(target, prop, value) {
@@ -125,20 +137,20 @@ export abstract class Block {
         });
     }
 
-    private _createDocumentElement(tagName) {
+    private _createDocumentElement(tagName):HTMLElement {
         return document.createElement(tagName);
     }
 
-    appendChild(node) {
+    appendChild(node:HTMLElement):void {
         this.children.push(node)
         this._element.appendChild(node)
     }
 
-    show=()=> {
+    show=():void=> {
         this._element.classList.remove('visually-hidden')
     }
 
-    hide=()=> {
+    hide=():void=> {
         this._element.classList.add('visually-hidden')
     }
 
