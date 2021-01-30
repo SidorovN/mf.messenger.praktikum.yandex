@@ -115,7 +115,7 @@ const passwordInputs = [
 
 const aside = new Component('aside',{
     props: {
-        link:'/chat.html'
+        link:'/chat/index.html'
     },
     classes: ['profile__aside']
 },profileAsideTmpl)
@@ -129,7 +129,7 @@ const avatarBtn = new Component('button',{
     props: {},
     emitter: [{
         event: 'click',
-        callback: ()=> eventBus.emit('toggleAvatarPopup')
+        callback: (e)=> eventBus.emit('toggleAvatarPopup')
     }],
     classes: ['profile__avatar']
 },'')
@@ -167,7 +167,7 @@ const changeUserBtn = new ProfileButton('button',{
     },
     emitter: [{
         event: 'click',
-        callback: ()=>eventBus.emit('toggleUserPopup',false)
+        callback: (e)=>eventBus.emit('toggleUserPopup',false)
     }],
 
     classes: ['profile__link'],
@@ -179,7 +179,7 @@ const changePasswordBtn = new ProfileButton('button',{
     },
     emitter: [{
         event: 'click',
-        callback: ()=>eventBus.emit('openPasswordPopup',passwordInputs)
+        callback: (e)=>eventBus.emit('openPasswordPopup',passwordInputs)
     }],
 
     classes: ['profile__link'],
@@ -192,7 +192,7 @@ const logoutBtn = new ProfileButton('a',{
     },
     emitter: [{
         event: 'click',
-        callback: ()=>eventBus.emit('logoutUser')
+        callback: (e)=>eventBus.emit('logoutUser')
     }],
 
     classes: ['profile__link','profile__link_red'],

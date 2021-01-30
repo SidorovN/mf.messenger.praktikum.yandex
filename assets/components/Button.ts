@@ -1,19 +1,11 @@
-import {Block} from "./Block.js";
 import {compile} from "../common/templator.js";
+import {Component} from "./Component.js";
 
-export class Button extends Block {
+export class Button extends Component {
 
     constructor(tagName = "div", config, tmpl:string='{{text}}') {
 
         super(tagName, config,tmpl);
-
-        if(config.emitter) {
-            this.setListeners(config.emitter)
-        }
-    }
-
-    setListeners(listeners: []) {
-        listeners.forEach((listener: { event: string,callback:void })=>this._element.addEventListener(listener.event,listener.callback))
     }
 
     render() {
