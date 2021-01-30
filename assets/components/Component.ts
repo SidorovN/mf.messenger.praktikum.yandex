@@ -26,7 +26,6 @@ export class Component extends Block {
     setListeners(listeners: IListener[]) {
         listeners.forEach(({ event,callback})=>this._element.addEventListener(event,callback)
         )
-        console.dir(this._element)
     }
 
     setOn(on) {
