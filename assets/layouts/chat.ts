@@ -6,6 +6,7 @@ import {tmpl as roomListTmpl} from "../blocks/room-list/roomList.tmpl.js"
 import {render} from "../common/render.js";
 
 export const chatLayout = new Component('div',{
+    props: {},
     classes: ['root','chat']
 })
 
