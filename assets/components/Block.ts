@@ -29,10 +29,10 @@ export abstract class Block {
     _eventBus: () => EventBus;
     props: IBlockProps;
     tmpl: string;
-    children = [];
+    children:HTMLElement[] = [];
     private fragment: DocumentFragment;
 
-    constructor(tagName:string = "div", config:IBlockProps, tmpl: string, children=[]) {
+    constructor(tagName:string = "div", config:IBlockProps, tmpl: string, children:HTMLElement[]=[]) {
         const eventBus = new EventBus();
         this._meta = {
             tagName,
@@ -40,7 +40,7 @@ export abstract class Block {
             classes: config.classes,
             attrs: config.attrs
         };
-
+        this.children = children
         this.tmpl = tmpl
         this.props = this._makePropsProxy(config.props);
         this.fragment = document.createDocumentFragment()

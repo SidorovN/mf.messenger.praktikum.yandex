@@ -1,5 +1,4 @@
-import {Block,IMeta} from "./Block.js";
-import { compile } from "../common/templator.js";
+import {IMeta} from "./Block.js";
 import {Component} from "./Component.js";
 
 
@@ -22,26 +21,29 @@ const VALIDATE_CONFIG = {
     }
 }
 interface IFormConfig extends IMeta {
-    onSubmit?: Function;
-    emitValidity?: Function;
+    onSubmit?: (event: Event) => void;
+    emitChange?: (state:boolean,input:HTMLInputElement,message:string) => void;
 }
 
 export class Form extends Component {
+    _element: HTMLFormElement;
     private inputs: HTMLInputElement[];
     private errors: HTMLElement[];
-    private onSubmit: Function;
-    private emitValidity: Function;
+    private onSubmit: (event: Event) => void;
+    private emitChange: (state:boolean,input:HTMLInputElement,message:string) => void;
 
     constructor(config: IFormConfig,tmpl:string) {
         super("form", config,tmpl);
-        this.onSubmit = config.onSubmit
-        this.emitValidity = config.emitValidity
+        if(config.onSubmit) {
+            this.onSubmit = config.onSubmit
+        }
+        this.emitChange = config.emitChange
 
         this._element.addEventListener('submit', e => {
             e.preventDefault();
             if (this.checkFormValidity()) {
                 if(this.onSubmit){
-                    this.onSubmit()
+                    this.onSubmit(e)
                 } else {
                     console.log(this.getValues.call(this))
                 }
@@ -67,7 +69,6 @@ export class Form extends Component {
     setListeners():void {
         this.inputs?.forEach((input) => {
             input.addEventListener('blur', () => {
-                this.props.inputs.find(propInput=> propInput.name === input.name).value = input.value
                 this.checkInputValidity(input);
             });
         });
@@ -82,28 +83,23 @@ export class Form extends Component {
         const regExp = VALIDATE_CONFIG[input.type]?.regexp
 
         if(input.value.search(regExp) !== -1) {
-            this.emitValidity(true,input.name,'')
+            this.emitChange(true,input,'')
             return true
         }
 
         const errorMessage = this.getErrorMessage(input.type)
 
-        this.emitValidity(false,input.name,errorMessage)
+        this.emitChange(false,input,errorMessage)
         return false
 
     }
 
     getValues() {
-        const values = {};
-
-        this.inputs.forEach(input => {
-            values[input.name] = input.value;
-        });
-        return values;
+        return new FormData(this._element);
     }
 
-    getErrorMessage(type:string):void {
-        return VALIDATE_CONFIG[type].message
+    getErrorMessage(type:string):string {
+        return VALIDATE_CONFIG[type]?.message ?? ''
     }
 
     disableInputs():void {
