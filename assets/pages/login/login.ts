@@ -31,7 +31,9 @@ const form = new Form({
     props: formProps,
     classes: ['login__form', 'js-form'],
     attrs: {},
-    emitValidity: (state:boolean,inputName:string,message:string="")=>eventBus.emit('emitValidity',form,state,inputName,message),
+    emitChange: (state:boolean,input: HTMLInputElement,message:string="")=> {
+        eventBus.emit('emitChange', form, state, input, message)
+    },
 }, formTmpl);
 
 const submitBtn = new Button('button',{
@@ -53,13 +55,13 @@ const loginBtn = new Button('a',{
 },btnTmpl)
 
 
-eventBus.on('emitValidity',(form,state,inputName,message = '') => {
+eventBus.on('emitChange',(form,state,input,message = '') => {
     const inputs = [...form.props.inputs]
-    inputs.forEach(input=> {
-        if(input.name === inputName) {
-            input.errorMessage = message
-            input.errorClass = !state ? '_error' : ''
-            console.log(input,state)
+    inputs.forEach(elem=> {
+        if (elem.name === input.name) {
+            elem.errorMessage = message;
+            elem.errorClass = !state ? '_error' : '';
+            elem.value = input.value;
         }
     })
 

@@ -140,7 +140,9 @@ const userForm = new Form({
         username: userData.display_name,
         inputs: userInputs
     },
-    emitValidity: (state:boolean,inputName:string,message:string="")=>eventBus.emit('emitValidity',userForm,state,inputName,message),
+    emitChange: (state:boolean,input: HTMLInputElement,message:string="")=> {
+        eventBus.emit('emitChange', userForm, state, input, message)
+    },
     classes: ['profile__form']
 },profileFormTmpl)
 
@@ -221,13 +223,14 @@ eventBus.on('toggleUserPopup',(disabled:boolean)=> {
 eventBus.on('toggleAvatarPopup',()=> {
     avatarPopup.toggle()
 })
-eventBus.on('emitValidity',(form,state,inputName,message = '') => {
+
+eventBus.on('emitChange',(form,state,input,message = '') => {
     const inputs = [...form.props.inputs]
-    inputs.forEach(input=> {
-        if(input.name === inputName) {
-            input.errorMessage = message
-            input.errorClass = !state ? '_error' : ''
-            console.log(input,state)
+    inputs.forEach(elem=> {
+        if (elem.name === input.name) {
+            elem.errorMessage = message;
+            elem.errorClass = !state ? '_error' : '';
+            elem.value = input.value;
         }
     })
 
