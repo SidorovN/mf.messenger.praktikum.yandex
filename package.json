@@ -5,9 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "build": "ttsc",
+    "build": "ttsc && npm run sassBuild",
     "dev": "nodemon server.js && npm run sassDev && ttsc",
-    "sassBuild": "sass --watch assets/blocks:assets/build/assets/blocks",
+    "sassBuild": "sass assets/blocks:assets/build/assets/blocks",
     "sassDev": "sass --watch assets/blocks:assets/build/assets/blocks",
     "test": "mocha -r ts-node/register 'tests/*.spec.ts'"
   },
