@@ -8,7 +8,7 @@ interface IListener {
 
 interface IBlockConfig extends IMeta {
     emitter?: IListener[];
-    on?: [string,Function]
+    on?: [string,Function];
 }
 
 

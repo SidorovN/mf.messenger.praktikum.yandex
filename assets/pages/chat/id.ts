@@ -6,36 +6,119 @@ import {tmpl as chatRoomHeaderTmpl} from "../../blocks/chat-room-header/chatRoom
 import {tmpl as chatFormPopupTmpl} from "../../blocks/chat-room-form/chatRoomFormPopup.tmpl.js"
 import {tmpl as chatFormTmpl} from "../../blocks/chat-room-form/chatRoomForm.tmpl.js"
 import {tmpl as messagesTmpl} from "../../blocks/messages/messages.tmpl.js"
-import {tmpl as popupTmpl} from "../../blocks/popup/popup.tmpl.js"
-import {render} from "../../common/render.js";
+import {formDataParser, makeImageStyle, render} from "../../common/commonFunctions.js";
 import {EventBus} from "../../components/EventBus.js";
-import {chatLayout} from "../../layouts/chat.js";
+import {HTTPTransport} from "../../components/HTTPTransport.js";
+import {API_URL, BASE_URL} from "../../common/CONSTS.js";
 
 const eventBus = new EventBus()
+import {ChatLayout} from "../../layouts/chat.js";
+
+const xhr = new HTTPTransport()
+console.log(ChatLayout, 'ChatLayout')
+export const chatPage = new ChatLayout('div', {
+    props: {
+        pk: '',
+        rooms: [],
+        activeRoom: {
+            title: '',
+            avatar: '',
+        }
+    },
+    componentDidUpdate() {
+        updatePage.call(this)
+    },
+    componentDidMount() {
+
+        updatePage.call(this)
+    },
+})
+
+
+const chatOpened = new Component('main', {
+    props: {}
+})
+
+const inputs = [{
+    label: 'Логин',
+    value: '',
+    type: 'text',
+    name: 'login',
+    errorMessage: '',
+    errorClass: '',
+    labelClass: '',
+    spanClass: '',
+    inputClass: 'input__input'
+}]
 
 const addUserProps = {
     title: 'Добавить пользователя',
-    btnText: 'Добавить'
+    btnText: 'Добавить',
+    inputs,
 }
 
 const removeUserProps = {
     title: 'Удалить пользователя',
-    btnText: 'Удалить'
+    btnText: 'Удалить',
+    inputs
 }
 
-const chatRoom = new Component('main', {
-    props: {},
+export const chatRoom = new Component('main', {
+    props: {
+        pk: chatPage.props,
+        room: chatPage.props.activeRoom,
+
+    },
     classes: ['chat-room'],
 }, chatRoomTmpl);
 
 
+
 const chatRoomHeader = new Component('header', {
     props: {
-        name: 'Андрей',
-        avatar: 'https://natalyland.ru/wp-content/uploads/e/1/9/e19f5d19fca32c1f6ddc27ad19054a9a.jpg'
+        room: chatPage.props.activeRoom
     },
     classes: ['chat-room-header'],
 }, chatRoomHeaderTmpl);
+
+const avatarBtn = new Button('button', {
+    props: {
+        style: ''
+    },
+    emitter: [{
+        event: 'click',
+        callback: (e) => chatPage._eventBus().emit('toggleUserPopup',{
+            title: 'Сменить аватар',
+            btnText: 'Сменить',
+            inputs: [{
+                label: 'Выбрать файл на компьютере',
+                value: '',
+                type: 'file',
+                name: 'avatar',
+                errorMessage: '',
+                errorClass: '',
+                labelClass: 'popup__label popup__label_file',
+                spanClass: 'popup__file-label-text',
+                inputClass: 'popup__file-input',
+            },]
+
+        },function () {
+            const data = this.getValues()
+            data.append('chatId',chatPage.props.pk)
+            xhr.put(API_URL + 'chats/avatar',{
+                data
+            }) .then(res => {
+                if (res.status >= 400) {
+                    Promise.reject(res)
+                } else return res.response
+            }).then(res => {
+            }).catch(err => {
+                console.warn(new Error(err))
+            })
+        })
+    }],
+    classes: ['chat-room-header__avatar-btn'],
+}, `<div class="chat-room-header__avatar" style="{{style}}"></div>`)
 
 const openHeaderPopupBtn = new Button('button', {
     props: {},
@@ -59,7 +142,27 @@ const addUserBtn = new Button('button', {
     },
     emitter: [{
         event: 'click',
-        callback: (e) => eventBus.emit('toggleUserPopup',addUserProps)
+        callback: (e) => chatPage._eventBus().emit('toggleUserPopup', addUserProps, function () {
+            xhr.post(API_URL + 'user/search', {
+                headers: {
+                    'content-type': 'application/json',
+                },
+                data: JSON.stringify(formDataParser(this.getValues())),
+            }).then(res => {
+                const users = res.response.map(user => user.id)
+                xhr.put(API_URL + 'chats/users', {
+                    headers: {
+                        'content-type': 'application/json',
+                    },
+                    data: JSON.stringify({
+                        users: users,
+                        chatId: chatPage.props.pk
+                    })
+                }).then(res => {
+                    // createChatForm.emit('toggleUserPopup')
+                })
+            })
+        })
     }],
     classes: ['chat-room__popup-row'],
 })
@@ -82,7 +185,30 @@ const removeUserBtn = new Button('button', {
     },
     emitter: [{
         event: 'click',
-        callback: (e) => eventBus.emit('toggleUserPopup',removeUserProps)
+        callback: (e) => {
+            console.log(e)
+            chatPage._eventBus().emit('toggleUserPopup', removeUserProps, function () {
+                xhr.post(API_URL + 'user/search', {
+                    headers: {
+                        'content-type': 'application/json',
+                    },
+                    data: JSON.stringify(formDataParser(this.getValues())),
+                }).then(res => {
+                    const users = res.response.map(user => user.id)
+                    xhr.delete(API_URL + 'chats/users', {
+                        headers: {
+                            'content-type': 'application/json',
+                        },
+                        data: JSON.stringify({
+                            users: users,
+                            chatId: chatPage.props.pk
+                        })
+                    }).then(res => {
+                        // createChatForm.emit('toggleUserPopup')
+                    })
+                })
+            })
+        }
     }],
     classes: ['chat-room__popup-row'],
 })
@@ -170,41 +296,46 @@ const formSubmitBtn = new Button('button', {
     classes: ['chat-room__submit'],
 })
 
-const userPopup = new Component('div', {
-    props: {},
-    classes: ['popup', 'popup_with_overlay', 'popup_opened'],
-
-    emitter: [{
-        event: 'click',
-        callback: (e) => {
-            if(e.target === e.currentTarget) {
-                eventBus.emit('toggleUserPopup')
-            }
-        }
-    }],
-}, '')
-
-const userPopupForm = new Form({
-    props: addUserProps,
-    classes: ['popup__content']
-}, popupTmpl)
 
 formPopup.hide()
 headerPopup.hide()
-userPopup.hide()
 
 eventBus.on('toggleAttachPopup', formPopup.toggle)
 eventBus.on('toggleHeaderPopup', headerPopup.toggle)
-eventBus.on('toggleUserPopup', (props)=> {
-    userPopup.toggle()
-    if(props){
-        headerPopup.props = props
-    }
+
+eventBus.on('emitChange', (form, state, input, message = '') => {
+    const inputs = [...form.props.inputs]
+    inputs.forEach(elem => {
+        if (elem.name === input.name) {
+            elem.errorMessage = message;
+            elem.errorClass = !state ? '_error' : '';
+            elem.value = input.value;
+        }
+    })
+
+    form.props.inputs = inputs
+
 })
 
 
+function updatePage() {
+    if (this.props.pk) {
+        chatRoomHeader.props.room = this.props.rooms.length ? this.props.rooms.find(room => room.id == this.props.pk) : chatRoomHeader.props.room
+        setAvatar(chatRoomHeader.props.room.avatar)
+        xhr.get(API_URL + `chats/${this.props.pk}/users`, {
+            headers: {
+                'content-type': 'application/json',
+            },
+        })
+    }
+}
 
-render(chatLayout, chatRoom);
+function setAvatar(src) {
+    avatarBtn.props.style = src ? makeImageStyle(BASE_URL + src) : ' '
+}
+
+
+render(chatPage, chatRoom);
 
 render(chatRoom, chatRoomHeader);
 render(chatRoom, messages);
@@ -214,11 +345,8 @@ render(chatFrom, openFormPopupBtn);
 render(chatFrom, formInput);
 render(chatFrom, formSubmitBtn);
 render(chatRoomHeader, openHeaderPopupBtn);
+render(chatRoomHeader, avatarBtn);
 render(headerPopup, addUserBtn);
 render(headerPopup, removeUserBtn);
 render(chatRoomHeader, headerPopup);
-render(userPopup, userPopupForm);
-
-render(document.querySelector('#page'), userPopup);
-render(document.querySelector('#page'), chatLayout);
 

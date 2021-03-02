@@ -29,7 +29,7 @@ export class Form extends Component {
     _element: HTMLFormElement;
     private inputs: HTMLInputElement[];
     private errors: HTMLElement[];
-    private onSubmit: (event: Event) => void;
+    onSubmit: (event: Event) => void;
     private emitChange: (state:boolean,input:HTMLInputElement,message:string) => void;
 
     constructor(config: IFormConfig,tmpl:string) {
@@ -41,12 +41,15 @@ export class Form extends Component {
 
         this._element.addEventListener('submit', e => {
             e.preventDefault();
+            console.log(this.onSubmit)
             if (this.checkFormValidity()) {
                 if(this.onSubmit){
                     this.onSubmit(e)
                 } else {
                     console.log(this.getValues.call(this))
                 }
+            } else {
+                console.warn('no valid')
             }
         });
 

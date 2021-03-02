@@ -1,14 +1,100 @@
 import {Button} from "../components/Button.js";
 import {Component} from "../components/Component.js";
-import {tmpl as btnTmpl} from "../blocks/btn/btn.tmp.js"
+// import {tmpl as btnTmpl} from "../blocks/btn/btn.tmp.js"
 import {tmpl as sidebarTmpl} from "../blocks/sidebar/sidebar.tmpl.js"
 import {tmpl as roomListTmpl} from "../blocks/room-list/roomList.tmpl.js"
-import {render} from "../common/render.js";
+import {formDataParser, render} from "../common/commonFunctions.js";
+import {HTTPTransport} from "../components/HTTPTransport.js";
+import {API_URL} from "../common/CONSTS.js";
+import {Form} from "../components/Form.js";
+import {tmpl as popupTmpl} from "../blocks/popup/popup.tmpl.js";
+import {Router} from "../components/Router.js";
 
-export const chatLayout = new Component('div',{
-    props: {},
-    classes: ['root','chat']
-})
+
+export class ChatLayout extends Component {
+    constructor(tagName = 'div', config = {}, tmpl = '') {
+
+        super(tagName, {classes: ['root', 'chat'], props: {}, ...config}, tmpl);
+        initLayout.call(this)
+    }
+}
+
+const router = new Router('#page')
+const xhr = new HTTPTransport()
+const createChatProps = {
+    title: 'Создать новый чат',
+    btnText: 'Создать',
+    inputs: [{
+        label: 'Название чата',
+        value: '',
+        type: 'text',
+        name: 'title',
+        errorMessage: '',
+        errorClass: '',
+        labelClass: '',
+        spanClass: '',
+        inputClass: 'input__input'
+    },]
+
+}
+
+
+const chatForm = new Form({
+    props: createChatProps,
+    classes: ['popup__content'],
+
+    emitChange: () => {
+    },
+    // onSubmit: (e) => {
+    //
+    // }
+}, popupTmpl)
+
+
+function initLayout() {
+    const self = this
+    const popup = new Component('div', {
+        props: {},
+        classes: ['popup', 'popup_with_overlay', 'popup_opened'],
+
+        emitter: [{
+            event: 'click',
+            callback(e) {
+                if (e.target === e.currentTarget) {
+                    self._eventBus().emit('toggleUserPopup')
+                }
+            }
+        }],
+    }, '')
+
+    const popupForm = new Form({
+        props: createChatProps,
+        classes: ['popup__content'],
+
+        emitChange: () => {
+        },
+        onSubmit: (e) => {
+        }
+    }, popupTmpl)
+
+    const xhr = new HTTPTransport()
+    xhr.get(API_URL + 'chats', {
+        headers: {
+            'content-type': 'application/json',
+        },
+    })
+        .then(res => {
+            if (res.status >= 400) {
+                Promise.reject(res)
+            } else return res.response
+        }).then(res => {
+        roomList.props.rooms = res
+        this.props.rooms = res
+
+    }).catch(err => {
+        console.warn(new Error(err))
+    })
+
 
     const sideBar = new Component('aside', {
         props: {},
@@ -16,51 +102,73 @@ export const chatLayout = new Component('div',{
     }, sidebarTmpl);
     const roomList = new Component('nav', {
         props: {
-            rooms: [
-                {
-                    id: 'id.html',
-                    avatar: 'https://natalyland.ru/wp-content/uploads/e/1/9/e19f5d19fca32c1f6ddc27ad19054a9a.jpg',
-                    title: 'Андрей',
-                    time: '10:49',
-                    message: 'Изображение',
-                    notification: '2'
-                }, {
-                    id: 'id.html',
-                    avatar: 'https://natalyland.ru/wp-content/uploads/e/1/9/e19f5d19fca32c1f6ddc27ad19054a9a.jpg',
-                    title: 'Андрей',
-                    time: '10:49',
-                    message: 'Изображение',
-                    notification: '2'
-                }, {
-                    id: 'id.html',
-                    avatar: 'https://natalyland.ru/wp-content/uploads/e/1/9/e19f5d19fca32c1f6ddc27ad19054a9a.jpg',
-                    title: 'Андрей',
-                    time: '10:49',
-                    message: 'Изображение',
-                    notification: '2'
-                },
-            ]
+            rooms: [],
         },
         classes: ['room-list'],
     }, roomListTmpl);
+    const createChatBtn = new Button('button', {
+        props: {},
+        emitter: [{
+            event: 'click',
+            callback(e) {
+                self._eventBus().emit('toggleUserPopup',createChatProps,()=> {
+                    xhr.post(API_URL + 'chats',{
+                        headers: {
+                            'content-type': 'application/json'
+                        },
+                        data: JSON.stringify(formDataParser(popupForm.getValues()))
+                    }).then(res=> {
+                        if(res.status >= 400 ) {
+                            Promise.reject(res)
+                        } else return res.response
+                    }).then(res=> {
+                        router.go(`/chat/${res.id}`)
+                    }).catch(err=> {
+                        throw new Error(err)
+                    })
+                })
+            }
+        }],
 
-    const submitBtn = new Button('button', {
-        props: {
-            text: 'Авторизоваться'
-        },
-        classes: ['btn', 'btn_blue', 'login__btn'],
-        attrs: {}
-    }, btnTmpl)
+        classes: ['button'],
+    }, 'Создать чат');
 
-    const loginBtn = new Button('a', {
-        props: {
-            text: 'Нет аккаунта?'
-        },
-        classes: ['btn', 'btn_white', 'login__btn'],
-        attrs: {
-            href: '/'
-        },
-    }, btnTmpl)
+    const createChatPopup = new Component('div', {
+        props: {},
+        classes: ['popup', 'popup_with_overlay', 'popup_opened'],
+        emitter: [{
+            event: 'click',
+            callback: (e) => {
+                if (e.target === e.currentTarget) {
+                    self._eventBus().emit('toggleUserPopup',{
 
-    render(chatLayout, sideBar);
+                    });
+                }
+            }
+        }],
+    }, '');
+
+
+    this._eventBus().on('toggleUserPopup', (props,onSubmit) => {
+
+        console.log(props,onSubmit,popupForm)
+        if (props) {
+            popupForm.props.title = props.title
+            popupForm.props.btnText = props.btnText
+            popupForm.props.inputs = props.inputs
+        }
+        if (onSubmit) {
+            popupForm.onSubmit = onSubmit.bind(popupForm)
+        }
+
+        popup.toggle()
+    })
+
+    popup.hide()
+
+    render(popup, popupForm)
+    render(this, popup);
+    render(this, sideBar);
     render(sideBar, roomList)
+    render(sideBar, createChatBtn)
+}

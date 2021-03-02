@@ -4,10 +4,55 @@ import {Form} from "../../components/Form.js";
 import {tmpl as profileFormTmpl} from "../../blocks/profile/profileForm.tmpl.js"
 import {tmpl as profileAsideTmpl} from "../../blocks/profile/profileAside.tmpl.js"
 import {tmpl as profilePopupTmpl} from "../../blocks/profile/profilePopup.tmpl.js"
-import {render} from "../../common/render.js";
+import {formDataParser, makeImageStyle, render} from "../../common/commonFunctions.js";
 import {EventBus} from "../../components/EventBus.js";
+import {HTTPTransport} from "../../components/HTTPTransport.js";
+import {API_URL, BASE_URL} from "../../common/CONSTS.js";
+import {Router} from "../../components/Router.js";
 
 const eventBus = new EventBus()
+const router = new Router('#page');
+
+let userInputs = []
+
+const xhr = new HTTPTransport()
+const passwordInputs = [
+    {
+        type: 'password',
+        name: 'oldPassword',
+        title: 'Старый пароль',
+        value: '',
+        errorMessage: '',
+        disabled: '',
+        errorClass: '',
+    },
+    {
+        type: 'password',
+        name: 'newPassword',
+        title: 'Новый пароль',
+        value: '',
+        errorMessage: '',
+        disabled: '',
+        errorClass: '',
+    },
+    {
+        type: 'password',
+        name: 'newPassword',
+        title: 'Повторите новый пароль',
+        value: '',
+        errorMessage: '',
+        disabled: '',
+        errorClass: '',
+    },
+]
+
+export const profilePage = new Component('div', {
+    props: {},
+    classes: ['profile','root'],
+    componentDidMount() {
+        updateUser()
+    },
+})
 
 class ProfileButton extends Button {
     getContent(): any {
@@ -18,121 +63,95 @@ class ProfileButton extends Button {
     }
 }
 
-const userData = {
-  display_name: 'Иван',
-  email: 'pochta@yandex.ru',
-  first_name: 'Иван',
-  phone: '+7 (909) 967 30 30',
-  profile: 'ivanivanov',
-  second_name: 'Иванов',
+let userData = {
+    display_name: 'Иван',
+    email: 'pochta@yandex.ru',
+    first_name: 'Иван',
+    phone: '+7 (909) 967 30 30',
+    login: 'ivanivanov',
+    second_name: 'Иванов',
 };
 
-const userInputs =  [
-    {
-        type:'email',
-        name: 'email',
-        title: 'Почта',
-        value: userData.email,
-        errorMessage: '',
-        errorClass: '',
-        disabled: 'disabled="true"'
-    },
-    {
-        type:'text',
-        name: 'profile',
-        title: 'Логин',
-        value: userData.profile,
-        errorMessage: '',
-        errorClass: '',
-        disabled: 'disabled'
-    },
-    {
-        type:'text',
-        name: 'first_name',
-        title: 'Имя',
-        value: userData.first_name,
-        errorMessage: '',
-        errorClass: '',
-        disabled: 'disabled'
-    },
-    {
-        type:'text',
-        name: 'second_name',
-        title: 'Фамилия',
-        value: userData.second_name,
-        errorMessage: '',
-        errorClass: '',
-        disabled: 'disabled'
-    },
-    {
-        type:'text',
-        name: 'display_name',
-        title: 'Имя в чате',
-        value: userData.display_name,
-        errorMessage: '',
-        errorClass: '',
-        disabled: 'disabled'
-    },
-    {
-        type:'tel',
-        name: 'phone',
-        title: 'Телефон',
-        value: userData.phone,
-        errorMessage: '',
-        errorClass: '',
-        disabled: 'disabled'
-    },
-]
 
-const passwordInputs = [
-    {
-        type:'password',
-        name: 'oldPassword',
-        title: 'Старый пароль',
-        value: '',
-        errorMessage: '',
-        disabled: '',
-        errorClass: '',
-    },
-    {
-        type:'password',
-        name: 'newPassword',
-        title: 'Новый пароль',
-        value: '',
-        errorMessage: '',
-        disabled: '',
-        errorClass: '',
-    },    {
-        type:'password',
-        name: 'newPassword',
-        title: 'Повторите новый пароль',
-        value: '',
-        errorMessage: '',
-        disabled: '',
-        errorClass: '',
-    },
-]
+function updateUserInputs() {
+    userInputs = [
+        {
+            type: 'email',
+            name: 'email',
+            title: 'Почта',
+            value: userData.email,
+            errorMessage: '',
+            errorClass: '',
+            disabled: 'disabled="true"'
+        },
+        {
+            type: 'text',
+            name: 'login',
+            title: 'Логин',
+            value: userData.login,
+            errorMessage: '',
+            errorClass: '',
+            disabled: 'disabled'
+        },
+        {
+            type: 'text',
+            name: 'first_name',
+            title: 'Имя',
+            value: userData.first_name,
+            errorMessage: '',
+            errorClass: '',
+            disabled: 'disabled'
+        },
+        {
+            type: 'text',
+            name: 'second_name',
+            title: 'Фамилия',
+            value: userData.second_name,
+            errorMessage: '',
+            errorClass: '',
+            disabled: 'disabled'
+        },
+        {
+            type: 'text',
+            name: 'display_name',
+            title: 'Имя в чате',
+            value: userData.display_name || userData.first_name,
+            errorMessage: '',
+            errorClass: '',
+            disabled: 'disabled'
+        },
+        {
+            type: 'tel',
+            name: 'phone',
+            title: 'Телефон',
+            value: userData.phone,
+            errorMessage: '',
+            errorClass: '',
+            disabled: 'disabled'
+        },]
+}
 
-const aside = new Component('aside',{
+const aside = new Component('aside', {
     props: {
-        link:'/chat/index.html'
+        link: '/chat'
     },
     classes: ['profile__aside']
-},profileAsideTmpl)
+}, profileAsideTmpl)
 
-const profile = new Component('main',{
+const profile = new Component('main', {
     props: userData,
     classes: ['profile__main'],
-},'')
+}, '')
 
-const avatarBtn = new Component('button',{
-    props: {},
+const avatarBtn = new Component('div', {
+    props: {
+        style: '',
+    },
     emitter: [{
         event: 'click',
-        callback: (e)=> eventBus.emit('toggleAvatarPopup')
+        callback: (e) => eventBus.emit('toggleAvatarPopup')
     }],
-    classes: ['profile__avatar']
-},'')
+}, '<button style="{{style}}" class="profile__avatar"></button>')
 
 
 const userForm = new Form({
@@ -140,93 +159,155 @@ const userForm = new Form({
         username: userData.display_name,
         inputs: userInputs
     },
-    emitChange: (state:boolean,input: HTMLInputElement,message:string="")=> {
+    emitChange: (state: boolean, input: HTMLInputElement, message: string = "") => {
         eventBus.emit('emitChange', userForm, state, input, message)
     },
+    onSubmit: updatePassword,
     classes: ['profile__form']
-},profileFormTmpl)
+}, profileFormTmpl)
 
-const userFormBtn = new Button('button',{
+const userFormBtn = new Button('button', {
     props: {
         text: 'Сохранить'
     },
-    classes: ['btn','btn_blue','profile__btn']
+    classes: ['btn', 'btn_blue', 'profile__btn']
 })
 
-const changesPanel = new Component('div',{
+const changesPanel = new Component('div', {
     props: {},
     classes: ['profile__changes']
-},'')
+}, '')
 
-const avatarPopup = new Component('div',{
+const avatarPopup = new Form( {
     props: {},
-    classes: ['popup', 'popup_with_overlay','profile__popup' ,'popup_opened']
-},profilePopupTmpl)
+    classes: ['popup', 'popup_with_overlay', 'profile__popup', 'popup_opened'],
+    onSubmit(e) {
+        xhr.put(API_URL + 'user/profile/avatar',
+            {
+            data: this.getValues()
+        })
+    },
+    emitChange(){}
+}, profilePopupTmpl)
 
-const changeUserBtn = new ProfileButton('button',{
+const changeUserBtn = new ProfileButton('button', {
     props: {
         text: 'Изменить данные'
     },
     emitter: [{
         event: 'click',
-        callback: (e)=>eventBus.emit('toggleUserPopup',false)
+        callback: (e) => eventBus.emit('toggleUserPopup', false)
     }],
 
     classes: ['profile__link'],
     attrs: {type: 'button'}
 })
-const changePasswordBtn = new ProfileButton('button',{
+const changePasswordBtn = new ProfileButton('button', {
     props: {
-        text:'Изменить пароль'
+        text: 'Изменить пароль'
     },
     emitter: [{
         event: 'click',
-        callback: (e)=>eventBus.emit('openPasswordPopup',passwordInputs)
+        callback: (e) => eventBus.emit('openPasswordPopup', passwordInputs)
     }],
 
     classes: ['profile__link'],
     attrs: {type: 'button'}
 })
 
-const logoutBtn = new ProfileButton('a',{
+const logoutBtn = new ProfileButton('button', {
     props: {
-        text:'Выйти'
+        text: 'Выйти'
     },
     emitter: [{
         event: 'click',
-        callback: (e)=>eventBus.emit('logoutUser')
+        callback: (e) => eventBus.emit('logoutUser')
     }],
 
-    classes: ['profile__link','profile__link_red'],
-    attrs: {href: '/login.html'}
+    classes: ['profile__link', 'profile__link_red'],
 })
+function updateUserInfo() {
+    console.log(JSON.stringify(formDataParser(this.getValues())))
+    xhr.put(API_URL + 'user/profile',{
+        headers: {
+                    'content-type': 'application/json',
+                },
+        data:JSON.stringify(formDataParser(this.getValues()))
+    }).then(res=> {
+        eventBus.emit('toggleUserPopup',true)
+    })
+}
+function updatePassword() {
 
+    xhr.put(API_URL + 'user/password',{
+        headers: {
+            'content-type': 'application/json',
+        },
+        data:JSON.stringify(formDataParser(this.getValues()))
+    }).then(res=> {
+        eventBus.emit('toggleUserPopup',true)
+    })
+}
+
+
+function updateUser() {
+    if (localStorage.getItem('id')) {
+        xhr.get(API_URL + 'user/' + JSON.parse(localStorage.getItem('id')).id, {
+            headers: {
+
+                'content-type': 'application/json',
+            },
+        })
+            .then(res => {
+                console.log(res)
+                if (res.status >= 400) {
+                    Promise.reject(res)
+                } else return res.response
+            }).then(res => {
+            userData = res
+            updateUserInputs()
+            userForm.props.inputs = userInputs
+            if(avatarBtn && res.avatar) {
+                avatarBtn.props.style = makeImageStyle(BASE_URL + res.avatar)
+            }
+        })
+    }
+}
 avatarPopup.hide()
 
 
-eventBus.on('openPasswordPopup',(props)=> {
+eventBus.on('openPasswordPopup', (props) => {
     userForm.props.inputs = props
+    userForm.onSubmit = updatePassword.bind(userForm)
     userFormBtn.show()
     userForm.enableInputs()
     changesPanel.toggle()
 
 })
 
-eventBus.on('toggleUserPopup',(disabled:boolean)=> {
+eventBus.on('toggleUserPopup', (disabled: boolean) => {
     const inputs = [...userForm.props.inputs]
-    inputs.forEach(input=> input.disabled = disabled ? 'disabled' : '')
+    inputs.forEach(input => input.disabled = disabled ? 'disabled' : '')
     userForm.props.inputs = inputs
+    userForm.onSubmit = updateUserInfo.bind(userForm)
     userFormBtn.toggle()
     changesPanel.toggle()
 })
 
-eventBus.on('toggleAvatarPopup',()=> {
+eventBus.on('toggleAvatarPopup', () => {
     avatarPopup.toggle()
 })
 
-eventBus.on('emitChange',(form,state,input,message = '') => {
+eventBus.on('logoutUser', () => {
+    const xhr = new HTTPTransport()
+    xhr.post(API_URL + 'auth/logout').then(res=> {
+        router.go('/')
+    })
+})
+
+eventBus.on('emitChange', (form, state, input, message = '') => {
     const inputs = [...form.props.inputs]
-    inputs.forEach(elem=> {
+    inputs.forEach(elem => {
         if (elem.name === input.name) {
             elem.errorMessage = message;
             elem.errorClass = !state ? '_error' : '';
@@ -240,14 +321,16 @@ eventBus.on('emitChange',(form,state,input,message = '') => {
 
 userFormBtn.hide()
 
-render(profile,avatarBtn)
-render(profile,userForm)
-render(profile,userFormBtn)
-render(profile,changesPanel)
-render(changesPanel,changeUserBtn)
-render(changesPanel,changePasswordBtn)
-render(changesPanel,logoutBtn)
-render(document.querySelector('#page'),aside)
-render(document.querySelector('#page'),profile)
-render(document.querySelector('#page'),avatarPopup)
+updateUserInputs()
+
+render(profile, avatarBtn)
+render(profile, userForm)
+render(userForm, userFormBtn)
+render(profile, changesPanel)
+render(changesPanel, changeUserBtn)
+render(changesPanel, changePasswordBtn)
+render(changesPanel, logoutBtn)
+render(profilePage, aside)
+render(profilePage, profile)
+render(profilePage, avatarPopup)
 

@@ -1,13 +1,14 @@
 import {Component} from "../../components/Component.js";
 import {tmpl as chatRoomTmpl} from "../../blocks/chat-no-room/chatNoRoom.tmpl.js"
-import {render} from "../../common/render.js";
+import {render} from "../../common/commonFunctions.js";
 
-import {chatLayout} from "../../layouts/chat.js";
+import {ChatLayout} from "../../layouts/chat.js";
 
-const chatRoom = new Component('main',{
+export const noChatPage = new ChatLayout()
+
+export const chatRoom = new Component('main',{
     props: {},
     classes: ['chat-no-room'],
 }, chatRoomTmpl);
 
-render(chatLayout, chatRoom);
-render(document.querySelector('#page'), chatLayout);
+render(noChatPage, chatRoom);

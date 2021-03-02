@@ -1,0 +1,70 @@
+.input {
+  font-weight: 400;
+  height: 36px;
+  width: 100%;
+  background-color: inherit;
+  color: #E2E0E0;
+
+  &__label {
+    position: relative;
+    display: block;
+    height: 100%;
+    width: 100%;
+    background-color: inherit;
+  }
+
+  &__input {
+    height: 100%;
+    width: 100%;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #464545;
+    background-color: inherit;
+    color: #E2E0E0;
+  }
+
+  &__input:invalid, &__input._error {
+    border-color: #F8493E;
+  }
+
+  &__input:valid:not(:placeholder-shown):not(:focus):not(._error) {
+    border-color: #33F3AE;
+  }
+
+  &__input::placeholder {
+    opacity: 0;
+  }
+
+  &__input:focus {
+    border-color: #3369F3;
+  }
+
+  &__label-text {
+    position: absolute;
+    font-size: 14px;
+    top: 50%;
+    left: 0;
+    padding: 2px 8px 2px 2px;
+    background-color: inherit;
+    transform: translateY(-50%);
+    transition: all 0.3s;
+  }
+
+  &__label-text > sup {
+    position: absolute;
+    bottom: 5px;
+    right: 2px;
+    color: #F8493E;
+  }
+
+  &__input:not(:placeholder-shown) + &__label-text,
+  &__input:focus + &__label-text {
+    top: 0;
+    font-size: 9px;
+  }
+
+  &__error-message {
+    font-size: 12px;
+    color: #F8493E;
+  }
+}

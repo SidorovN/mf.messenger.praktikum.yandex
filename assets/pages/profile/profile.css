@@ -1,8 +1,6 @@
-@import "/common/common.css";
-@import "/vendor/fonts/fonts.css";
-@import "/blocks/root/root.css";
-@import "/blocks/btn/btn.css";
-@import '/blocks/title/title.css';
-@import "/blocks/popup/popup.css";
-@import "/blocks/profile-input/profile-input.css";
-@import "/blocks/profile/profile.css";
+@import "/build/assets/blocks/root/root.css";
+@import "/build/assets/blocks/btn/btn.css";
+@import '/build/assets/blocks/title/title.css';
+@import "/build/assets/blocks/popup/popup.css";
+@import "/build/assets/blocks/profile-input/profile-input.css";
+@import "/build/assets/blocks/profile/profile.css";

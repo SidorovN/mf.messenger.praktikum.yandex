@@ -1,0 +1,30 @@
+.error {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+
+&__title {
+  text-align: center;
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 40px;
+  margin: 0 0 40px;
+}
+
+&__subtitle {
+  text-align: center;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 20px;
+  margin: 0 0 70px;
+}
+
+&__link {
+  text-align: center;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 11px;
+  color: #33F3AE;
+}}

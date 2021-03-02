@@ -1,4 +1,1 @@
-export const tmpl = `
-
-
-`;
+export const tmpl = ``;

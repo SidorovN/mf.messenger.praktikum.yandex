@@ -1,12 +1,12 @@
 const FOREACH_REGEXP = /\{\{\s+?#FOR\s+?([a-z]+)\sin\s([a-z]+)\s+?\}\}([\d\D]+)\{\{\s+?#ENDFOR\s+?\}\}/gim;
 const PROPS_REGEXP = /\{\{(.*?)?\}\}/m;
 
-export function compile(str:string, ctx: object={}) {
-    const forElems:string = parseFor(str, ctx)
-    return parseStr(forElems,ctx)
+function compile(str: string, ctx: object = {}) {
+    const forElems: string = parseFor(str, ctx)
+    return parseStr(forElems, ctx)
 
-    function getStr(obj: object={}, path:string, defaultValue='') {
-        const keys  = path.split('.');
+    function getStr(obj: object = {}, path: string, defaultValue = '') {
+        const keys = path.split('.');
         let result = obj;
         for (let key of keys) {
             result = result[key];
@@ -21,7 +21,7 @@ export function compile(str:string, ctx: object={}) {
 
     function getFor(props, value, key, str) {
         const newStr = [...props[value]].map((elem, index) => {
-            const elemString = str.replace(new RegExp(`\\{\\{\\s?${key}\.+?\\}\\}`,'gi'),(element)=> element.replace(key,`${value}.${index}`))
+            const elemString = str.replace(new RegExp(`\\{\\{\\s?${key}\.+?\\}\\}`, 'gi'), (element) => element.replace(key, `${value}.${index}`))
             const ctx = {}
             ctx[key] = elem
             return elemString
@@ -32,7 +32,7 @@ export function compile(str:string, ctx: object={}) {
     }
 
 
-    function parseFor(str,ctx) {
+    function parseFor(str, ctx) {
         let key = null;
         while ((key = FOREACH_REGEXP.exec(str))) {
             if (key[1]) {
@@ -60,3 +60,26 @@ export function compile(str:string, ctx: object={}) {
 
 }
 
+type StringIndexed = Record<string, any>;
+
+const obj: StringIndexed = {
+    key: 1,
+    key2: 'test',
+    key3: false,
+    key4: true,
+    key5: [1, 2, 3],
+    key6: {a: 1},
+    key7: {b: {d: 2}},
+};
+
+
+function queryStringify(data: StringIndexed): string | never {
+    const answer = []
+    Object.keys(data).forEach(key=> {
+        answer.push(`${key}=${data[key]}`)
+    })
+    return answer.join('&')
+}
+
+
+export {compile}

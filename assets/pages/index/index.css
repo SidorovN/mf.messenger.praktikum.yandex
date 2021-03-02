@@ -1,9 +1,7 @@
-@import "../../common/common.css";
-@import "../../vendor/fonts/fonts.css";
-@import "../../blocks/sidebar/sidebar.css";
-@import "../../blocks/room-item/room-item.css";
-@import "../../blocks/root/root.css";
-@import "../../blocks/chat-room/chat-room.css";
+@import "/build/assets/blocks/sidebar/sidebar.css";
+@import "/build/assets/blocks/room-item/room-item.css";
+@import "/build/assets/blocks/root/root.css";
+@import "/build/assets/blocks/chat-room/chat-room.css";
 
 
 .chat {

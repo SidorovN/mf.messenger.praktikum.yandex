@@ -1,0 +1,77 @@
+.popup {
+  pointer-events: none;
+  opacity: 0;
+  transition: .2s easy;
+
+  &_with_overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    padding: 36px;
+    background-color: rgba(0, 0, 0, .4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &_opened {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  &__content {
+    background-color: #808080;
+    padding: 30px;
+    min-width: 340px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    border-radius: 12px;
+  }
+
+
+  &__label {
+    display: block;
+    margin: 0 auto 44px;
+  }
+
+  &__label_file {
+    font-weight: 500;
+    max-width: 122px;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+    text-decoration-line: underline;
+    color: #33F3AE;
+  }
+
+  &__file-input {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__file-input::placeholder {
+    text-align: center;
+  }
+
+  &__file-input:valid + &__file-label-text,
+  &__file-input:not(:valid) {
+    display: none;
+  }
+
+  &__file-input::-webkit-file-upload-button {
+    display: none;
+  }
+
+  &__title {
+    margin-bottom: 44px;
+    text-align: center;
+  }
+}
+

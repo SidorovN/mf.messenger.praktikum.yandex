@@ -1,9 +1,17 @@
 import {Form} from "../../components/Form.js";
-import {render} from "../../common/render.js";
+import {formDataParser, render} from "../../common/commonFunctions.js";
 import {tmpl as formTmpl} from "../../blocks/login/login.tmpl.js"
 import {Button} from "../../components/Button.js";
 import {tmpl as btnTmpl} from "../../blocks/btn/btn.tmp.js"
 import {EventBus} from "../../components/EventBus.js";
+import {Component} from "../../components/Component.js";
+import {HTTPTransport} from "../../components/HTTPTransport.js";
+import {API_URL} from "../../common/CONSTS.js";
+
+export const signupPage = new Component('div',{
+    classes: ['root', 'login'],
+    props: {},
+})
 
 const eventBus = new EventBus()
 
@@ -68,6 +76,19 @@ const form = new Form({
     emitChange: (state:boolean,input: HTMLInputElement,message:string="")=> {
         eventBus.emit('emitChange', form, state, input, message)
     },
+    onSubmit (e) {
+        const xhr = new HTTPTransport()
+        xhr.post(API_URL + 'auth/signup',
+
+            {
+                headers: {
+                    'content-type': 'application/json', // Данные отправляем в формате JSON
+                },
+                data: JSON.stringify(formDataParser(this.getValues()))
+            }
+        )
+            .then(res=>console.log(res))
+    }
 
 }, formTmpl);
 
@@ -85,7 +106,7 @@ const loginBtn = new Button('a',{
     },
     classes: ['btn','btn_white','login__btn'],
     attrs: {
-        href:'/login.html'
+        href:'/login'
     },
 },btnTmpl)
 
@@ -103,7 +124,7 @@ eventBus.on('emitChange',(form,state,input,message = '') => {
 
 })
 
-render(document.querySelector('#page'), form);
 render(form, submitBtn);
 render(form, loginBtn);
+render(signupPage, form);
 
