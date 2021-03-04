@@ -1,0 +1,36 @@
+@import "/src/commonmmon/common.css";
+@import "/static/vendor/fonts/fonts.css";
+@import "/build/blocks/root/root.css";
+@import "/build/blocks/input/input.css";
+@import "/build/blocks/btn/btn.css";
+@import "/build/blocks/title/title.css";
+
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 36px 0;
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #999999;
+    border-radius: 12px;
+    width: 340px;
+    min-height: 450px;
+    padding: 30px;
+  }
+
+  &__input {
+    margin-bottom: 20px;
+  }
+
+  &__btn:not(:last-child) {
+    margin-top: auto;
+    margin-bottom: 16px;
+  }
+
+  &__title {
+    margin: 20px auto 50px;
+  }
+}

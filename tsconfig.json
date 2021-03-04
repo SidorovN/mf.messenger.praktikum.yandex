@@ -7,8 +7,10 @@
       "scripthost",
       "es2015.proxy"
     ],
-    "outDir": "assets/build",
-    "allowSyntheticDefaultImports": true
+    "outDir": "build",
+    "rootDir": "src",
+    "allowSyntheticDefaultImports": true,
+    "module": "ES2015"
   },
   "plugins": [
     {
@@ -22,6 +24,7 @@
   "alwaysStrict": true,
   "sourceMap": true,
   "strictNullChecks": true,
+  "include": ["src/**/*.ts"],
   "exclude": [
     "node_modules"
   ]

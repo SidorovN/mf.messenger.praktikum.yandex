@@ -1,11 +1,10 @@
-import {expect} from 'chai';
-
-import {compile} from '../src/common/templator';
-
-describe("Шаблонизатор", () => {
-  it("Шаблонизатор возвращает строку с пропсом", () => {
+import { expect } from 'chai';
+import { compile } from '../src/common/templator';
+describe('Шаблонизатор', () => {
+  it('Шаблонизатор возвращает строку с пропсом', () => {
     expect(
-        compile(`
+      compile(
+        `
 <form class="popup__content" novalidate="true">
 <h3 class="title title_size_s popup__title">{{title}}</h3>
 {{ #FOR input in inputs }}
@@ -19,22 +18,26 @@ describe("Шаблонизатор", () => {
 {{ #ENDFOR }}
 <button class="btn btn_blue login__btn">{{btnText}}</button>
 </form>
-`, {
-        title: 'Создать новый чат',
-        btnText: 'Создать',
-        inputs: [{
-            label: 'Название чата',
-            value: '',
-            type: 'text',
-            name: 'title',
-            errorMessage: '',
-            errorClass: '',
-            labelClass: '',
-            spanClass: '',
-            inputClass: 'input__input'
-        },]
-    })).to.be.equal(
-        `
+`,
+        {
+          title: 'Создать новый чат',
+          btnText: 'Создать',
+          inputs: [
+            {
+              label: 'Название чата',
+              value: '',
+              type: 'text',
+              name: 'title',
+              errorMessage: '',
+              errorClass: '',
+              labelClass: '',
+              spanClass: '',
+              inputClass: 'input__input',
+            },
+          ],
+        }
+      )
+    ).to.be.equal(`
 <form class="popup__content" novalidate="true">
 <h3 class="title title_size_s popup__title">Создать новый чат</h3>
 <div class="input login__input popup__label">

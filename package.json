@@ -7,8 +7,8 @@
     "start": "node server.js",
     "build": "ttsc && npm run sassBuild",
     "dev": "nodemon server.js && npm run sassDev && ttsc",
-    "sassBuild": "sass assets/blocks:assets/build/assets/blocks",
-    "sassDev": "sass --watch assets/blocks:assets/build/assets/blocks",
+    "sassBuild": "sass src:build",
+    "sassDev": "sass --watch src:src",
     "test": "mocha -r ts-node/register 'tests/*.spec.ts'"
   },
   "repository": {

@@ -1,0 +1,16 @@
+@import "/build/blocks/sidebar/sidebar.css";
+@import "/build/blocks/room-item/room-item.css";
+@import "/build/blocks/root/root.css";
+@import "/build/blocks/chat-room/chat-room.css";
+
+
+.chat {
+  display: flex;
+  height: 100vh;
+}
+
+
+
+
+
+
