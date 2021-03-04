@@ -73,13 +73,9 @@ const form = new Form({
                 });
             })
             .catch(err=> {
-                if(err.response.reason === 'user already in system') {
-                    router.go('/chat/')
-                } else {
                     this.props.inputs[0].errorMessage = translateError(err.response.reason)
                     this.props.inputs[1].value = ''
                     this._eventBus().emit(Form.EVENTS.FLOW_CDU)
-                }
         })
     }
 }, formTmpl);

@@ -302,6 +302,7 @@ eventBus.on('toggleAvatarPopup', () => {
 eventBus.on('logoutUser', () => {
     const xhr = new HTTPTransport()
     xhr.post(API_URL + 'auth/logout').then(res=> {
+        localStorage.removeItem('user')
         router.go('/')
     })
 })

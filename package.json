@@ -4,7 +4,7 @@
   "description": "Даже законченный проект остаётся только заготовкой, пока им не начнут пользоваться. Но сначала пользователь должен понять, зачем ему пользоваться вашим кодом. В этом помогает файл README.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "npm run build && node server.js",
     "build": "ttsc && npm run sassBuild",
     "dev": "nodemon server.js && npm run sassDev && ttsc",
     "sassBuild": "sass src:build",
