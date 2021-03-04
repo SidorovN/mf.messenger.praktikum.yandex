@@ -6,7 +6,7 @@ const router = express.Router();
 const { PORT = 3000 } = process.env;
 
 const app = express();
-const staticPath = path.join(__dirname);
+const staticPath = path.join(__dirname, 'static');
 
 app.listen(PORT, () => {
   console.log(`server started at port ${PORT}`);
@@ -14,5 +14,5 @@ app.listen(PORT, () => {
 
 app.use(express.static(staticPath));
 app.use('*', (req, res) => {
-  res.sendFile(path.join(staticPath, 'static', 'index.html'));
+  res.sendFile(path.join(staticPath, 'index.html'));
 });

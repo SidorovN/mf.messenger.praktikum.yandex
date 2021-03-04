@@ -7,7 +7,7 @@
       "scripthost",
       "es2015.proxy"
     ],
-    "outDir": "build",
+    "outDir": "static/build",
     "rootDir": "src",
     "allowSyntheticDefaultImports": true,
     "module": "ES2015"
