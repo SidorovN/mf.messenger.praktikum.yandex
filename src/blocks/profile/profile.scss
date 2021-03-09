@@ -21,12 +21,12 @@
   }
 
   &__back-link {
-    background-image: url(/media/arrow.svg);
+    background-image: url(/static/media/arrow.svg);
     transform: rotate(180deg);
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    background-color: #3369F3;
+    background-color: #3369f3;
   }
 
   &__avatar {
@@ -36,8 +36,8 @@
     height: 130px;
     border: none;
     outline: none;
-    background-color: #999999;
-    background-image: url('/src/mediaedia/avatar.svg');
+    background-color: #999;
+    background-image: url('/static/media/avatar.svg');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -64,9 +64,9 @@
     line-height: 14px;
     text-align: center;
     padding: 10px;
-    color: #E2E0E0;
-    background-color: rgba(0, 0, 0, .5);
-    transition: .1s ease;
+    color: #e2e0e0;
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: 0.1s ease;
   }
 
   &__avatar:hover::after {
@@ -85,7 +85,6 @@
     align-items: center;
     width: 100%;
   }
-
 
   &__changes {
     display: block;
@@ -114,7 +113,7 @@
     padding: 0;
     display: inline;
     text-decoration: none;
-    color: #3369F3;
+    color: #3369f3;
     border: none;
     background-color: transparent;
     outline: none;
@@ -126,6 +125,6 @@
   }
 
   &__link_red {
-    color: #F8493E;
+    color: #f8493e;
   }
 }

@@ -35,7 +35,7 @@
     color: inherit;
     width: 100%;
     box-sizing: border-box;
-    background: #464545 url(/media/search.svg) no-repeat 100px;
+    background: #464545 url(/static/media/search.svg) no-repeat 100px;
   }
 
   &__input:not(:placeholder-shown) {
@@ -45,7 +45,6 @@
   &__input::placeholder {
     text-align: center;
     width: fit-content;
-    color: #999999;
+    color: #999;
   }
 }
-

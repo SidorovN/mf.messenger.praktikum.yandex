@@ -3,7 +3,7 @@
   height: 36px;
   width: 100%;
   background-color: inherit;
-  color: #E2E0E0;
+  color: #e2e0e0;
 
   &__label {
     position: relative;
@@ -20,23 +20,24 @@
     border: none;
     border-bottom: 1px solid #464545;
     background-color: inherit;
-    color: #E2E0E0;
+    color: #e2e0e0;
   }
 
-  &__input:invalid, &__input._error {
-    border-color: #F8493E;
+  &__input:focus {
+    border-color: #3369f3;
+  }
+
+  &__input:invalid,
+  &__input._error {
+    border-color: #f8493e;
   }
 
   &__input:valid:not(:placeholder-shown):not(:focus):not(._error) {
-    border-color: #33F3AE;
+    border-color: #33f3ae;
   }
 
   &__input::placeholder {
     opacity: 0;
-  }
-
-  &__input:focus {
-    border-color: #3369F3;
   }
 
   &__label-text {
@@ -54,7 +55,7 @@
     position: absolute;
     bottom: 5px;
     right: 2px;
-    color: #F8493E;
+    color: #f8493e;
   }
 
   &__input:not(:placeholder-shown) + &__label-text,
@@ -65,6 +66,6 @@
 
   &__error-message {
     font-size: 12px;
-    color: #F8493E;
+    color: #f8493e;
   }
 }

@@ -1,6 +1,6 @@
 .room-item {
   text-decoration: none;
-  color: #E2E0E0;
+  color: #e2e0e0;
   padding: 12px 0;
   border-bottom: 1px solid #464545;
   display: grid;
@@ -13,9 +13,9 @@
   &__avatar {
     width: 47px;
     height: 47px;
-    background-color: #EFEFEF;
+    background-color: #efefef;
     border-radius: 50%;
-    object-fit: cover;
+    background-size: cover;
     grid-row: 1/ span 2;
   }
 
@@ -43,7 +43,7 @@
     font-size: 11px;
     line-height: 20px;
     color: #fff;
-    background: #3369F3;
+    background: #3369f3;
     border-radius: 50%;
     text-align: center;
     justify-self: end;

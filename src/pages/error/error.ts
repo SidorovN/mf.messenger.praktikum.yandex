@@ -1,11 +1,14 @@
-import {tmpl} from "../../blocks/error/404.tmpl.js"
-import {Component} from "../../components/Component.js";
+import {tmpl} from '../../blocks/error/404.tmpl';
+import {Component} from '../../components/Component';
 
-export const errorPage = new Component('div',{
-    classes: ['root', 'error'],
-    props: {
-        title: 'Не туда попали',
-        errorStatus: 404,
+export const errorPage = new Component(
+    'div',
+    {
+        classes: ['root', 'error'],
+        props: {
+            title: 'Не туда попали',
+            errorStatus: 404
+        }
     },
-},tmpl)
-
+    tmpl
+);

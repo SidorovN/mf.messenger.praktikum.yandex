@@ -1,9 +1,8 @@
-@import "/src/common/common.css";
-@import "/vendor/fonts/fonts.css";
-@import "/build/blocks/root/root.css";
-@import "/build/blocks/input/input.css";
-@import "/build/blocks/btn/btn.css";
-@import "/build/blocks/title/title.css";
+@import "/src/common/common.scss";
+@import "/static/vendor/fonts/fonts.css";
+@import "/src/blocks/root/root.scss";
+@import "/src/blocks/input/input.scss";
+@import "/src/blocks/btn/btn.scss";
 
 .login {
   display: flex;
@@ -14,7 +13,7 @@
   &__form {
     display: flex;
     flex-direction: column;
-    border: 1px solid #999999;
+    border: 1px solid #999;
     border-radius: 12px;
     width: 340px;
     min-height: 450px;

@@ -11,7 +11,7 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #464545;
-    box-shadow: 5px 5px 15px 5px #2E2C2C;
+    box-shadow: 5px 5px 15px 5px #2e2c2c;
   }
 
   &__name {
@@ -19,7 +19,7 @@
     font-weight: 600;
     font-size: 13px;
     line-height: 13px;
-    color: #E2E0E0;
+    color: #e2e0e0;
     margin-right: auto;
   }
 
@@ -33,11 +33,11 @@
     background-color: transparent;
     background-repeat: no-repeat;
     background-position: center;
-    background-image: url("/src/mediaedia/dots.svg");
+    background-image: url("/static/media/dots.svg");
   }
 
   &__detail_active {
-    background-color: #3369F3;
+    background-color: #3369f3;
   }
 
   &__avatar {
@@ -58,7 +58,7 @@
   }
 
   &__message-input {
-    color: #E2E0E0;
+    color: #e2e0e0;
     font-family: "Inter", serif;
     line-height: 24px;
     resize: none;
@@ -73,7 +73,7 @@
   }
 
   &__message-input::placeholder {
-    color: #999999;
+    color: #999;
     font-weight: 500;
     font-size: 12px;
     line-height: 24px;
@@ -95,7 +95,7 @@
   }
 
   &__form-attach-btn_active {
-    stroke: #3369F3;
+    stroke: #3369f3;
   }
 
   &__popup-row {
@@ -104,7 +104,7 @@
     font-weight: 500;
     font-size: 12px;
     line-height: 14px;
-    color: #E2E0E0;
+    color: #e2e0e0;
     align-items: center;
     cursor: pointer;
     margin: 8px 0;
@@ -122,8 +122,8 @@
     width: 28px;
     height: 28px;
     border: none;
-    background-color: #3369F3;
-    background-image: url('/media/arrow.svg');
+    background-color: #3369f3;
+    background-image: url('/static/media/arrow.svg');
     border-radius: 50%;
     cursor: pointer;
   }

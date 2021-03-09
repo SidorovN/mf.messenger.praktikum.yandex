@@ -3,7 +3,7 @@
   height: 32px;
   width: 100%;
   background-color: inherit;
-  color: #E2E0E0;
+  color: #e2e0e0;
   margin-bottom: 6px;
 
   &__label {
@@ -27,31 +27,30 @@
     border: none;
     border-bottom: 1px solid #464545;
     background-color: inherit;
-    color: #999999;
+    color: #999;
   }
 
   &__error-message {
     position: absolute;
     font-size: 10px;
     margin-bottom: 3px;
-    color: #F8493E;
-  }
-
-  &__input:valid:not(:placeholder-shown):not(:focus):not(._error) {
-    border-color: #33F3AE;
-  }
-
-  &__input._error {
-    border-color: #F8493E;
-  }
-
-
-  &__input::placeholder {
-    opacity: 0;
+    color: #f8493e;
   }
 
   &__input:focus {
-    border-color: #3369F3;
+    border-color: #3369f3;
+  }
+
+  &__input:valid:not(:placeholder-shown):not(:focus):not(._error) {
+    border-color: #33f3ae;
+  }
+
+  &__input._error {
+    border-color: #f8493e;
+  }
+
+  &__input::placeholder {
+    opacity: 0;
   }
 
   &__label-text {
@@ -67,6 +66,6 @@
     position: absolute;
     bottom: 5px;
     right: 2px;
-    color: #F8493E;
+    color: #f8493e;
   }
 }

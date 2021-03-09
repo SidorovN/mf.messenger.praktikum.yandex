@@ -1,14 +1,15 @@
+/* eslint-disable */
 const FOREACH_REGEXP = /\{\{\s+?#FOR\s+?([a-z]+)\sin\s([a-z]+)\s+?\}\}([\d\D]+)\{\{\s+?#ENDFOR\s+?\}\}/gim;
 const PROPS_REGEXP = /\{\{(.*?)?\}\}/m;
-
+/* eslint-enable */
 function compile(str: string, ctx: object = {}) {
-    const forElems: string = parseFor(str, ctx)
-    return parseStr(forElems, ctx)
+    const forElems: string = parseFor(str, ctx);
+    return parseStr(forElems, ctx);
 
-    function getStr(obj: object = {}, path: string, defaultValue = '') {
+    function getStr(obj: object, path: string, defaultValue = '') {
         const keys = path.split('.');
         let result = obj;
-        for (let key of keys) {
+        for (const key of keys) {
             result = result[key];
 
             if (result === undefined) {
@@ -21,16 +22,19 @@ function compile(str: string, ctx: object = {}) {
 
     function getFor(props, value, key, str) {
         const newStr = [...props[value]].map((elem, index) => {
-            const elemString = str.replace(new RegExp(`\\{\\{\\s?${key}\.+?\\}\\}`, 'gi'), (element) => element.replace(key, `${value}.${index}`))
-            const ctx = {}
-            ctx[key] = elem
-            return elemString
+            const elemString = str.replace(
+                /* eslint-disable */
+                new RegExp(`\\{\\{\\s?${key}\.+?\\}\\}`, 'gi'),
+                /* eslint-enable */
+                element => element.replace(key, `${value}.${index}`)
+            );
+            const ctx = {};
+            ctx[key] = elem;
+            return elemString;
+        });
 
-        })
-
-        return newStr.join('')
+        return newStr.join('');
     }
-
 
     function parseFor(str, ctx) {
         let key = null;
@@ -39,11 +43,11 @@ function compile(str: string, ctx: object = {}) {
                 const tmplValue = key[key.length - 1].trim();
 
                 const parsedStr = getFor(ctx, key[2], key[1], tmplValue);
-                str = str.replace(new RegExp(key[0], "gi"), parsedStr);
+                str = str.replace(new RegExp(key[0], 'gi'), parsedStr);
             }
         }
 
-        return str
+        return str;
     }
 
     function parseStr(str, ctx) {
@@ -52,12 +56,12 @@ function compile(str: string, ctx: object = {}) {
             if (key[1]) {
                 const tmplValue = key[1].trim();
                 const data = getStr(ctx, tmplValue);
-                str = str.replace(new RegExp(key[0], "gi"), data);
+                str = str.replace(new RegExp(key[0], 'gi'), data);
             }
         }
-        return str
-    }
 
+        return str;
+    }
 }
 
 type StringIndexed = Record<string, any>;
@@ -69,17 +73,15 @@ const obj: StringIndexed = {
     key4: true,
     key5: [1, 2, 3],
     key6: {a: 1},
-    key7: {b: {d: 2}},
+    key7: {b: {d: 2}}
 };
 
-
 function queryStringify(data: StringIndexed): string | never {
-    const answer = []
-    Object.keys(data).forEach(key=> {
-        answer.push(`${key}=${data[key]}`)
-    })
-    return answer.join('&')
+    const answer = [];
+    Object.keys(data).forEach(key => {
+        answer.push(`${key}=${data[key]}`);
+    });
+    return answer.join('&');
 }
 
-
-export {compile}
+export {compile};

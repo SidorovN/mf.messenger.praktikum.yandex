@@ -1,7 +1,7 @@
 .popup {
   pointer-events: none;
   opacity: 0;
-  transition: .2s easy;
+  transition: 0.2s easy;
 
   &_with_overlay {
     position: fixed;
@@ -12,7 +12,7 @@
     width: 100vw;
     height: 100vh;
     padding: 36px;
-    background-color: rgba(0, 0, 0, .4);
+    background-color: rgba(0, 0, 0, 0.4);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -33,7 +33,6 @@
     border-radius: 12px;
   }
 
-
   &__label {
     display: block;
     margin: 0 auto 44px;
@@ -46,7 +45,7 @@
     line-height: 16px;
     text-align: center;
     text-decoration-line: underline;
-    color: #33F3AE;
+    color: #33f3ae;
   }
 
   &__file-input {
@@ -60,12 +59,12 @@
     text-align: center;
   }
 
-  &__file-input:valid + &__file-label-text,
-  &__file-input:not(:valid) {
+  &__file-input::-webkit-file-upload-button {
     display: none;
   }
 
-  &__file-input::-webkit-file-upload-button {
+  &__file-input:valid + &__file-label-text,
+  &__file-input:not(:valid) {
     display: none;
   }
 
@@ -74,4 +73,3 @@
     text-align: center;
   }
 }
-

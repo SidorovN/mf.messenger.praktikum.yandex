@@ -1,5 +1,5 @@
-import {Component} from "./Component.js";
-import {render} from "../common/commonFunctions.js";
+import {Component} from './Component';
+import {render} from '../common/commonFunctions';
 
 function isEqual(lhs, rhs) {
     return lhs === rhs;
@@ -7,10 +7,15 @@ function isEqual(lhs, rhs) {
 
 class Route {
     readonly _pathname: string;
+
     private readonly _blockClass: any;
+
     private _block: Component | null;
+
     private _props: any;
+
     private scriptLoaded: boolean = false;
+
     pk: boolean;
 
     constructor(pathname, view, props, pk?: boolean) {
@@ -18,39 +23,48 @@ class Route {
         this._blockClass = view;
         this._block = view;
         this._props = props;
-        this.pk = pk
+        this.pk = pk;
     }
 
-    leave():void {
+    leave(): void {
         this._block?.hide();
     }
 
-    match(pathname:string):boolean {
-        return isEqual(pathname, this._pathname) || (pathname.indexOf(this._pathname) === 0 && this.pk);
+    match(pathname: string): boolean {
+        return (
+            isEqual(pathname, this._pathname) || (pathname.indexOf(this._pathname) === 0 && this.pk)
+        );
     }
 
-    render(pk:string):void {
-
+    render(pk: string): void {
         if (!this._block) {
             this._block = new this._blockClass();
             render(this._props.rootQuery, this._block);
             return;
         }
 
-        if(this._block.needInit) {
-            this._block.init()
+        if (this._block.needInit) {
+            this._block.init();
         }
+
         render(document.querySelector(this._props.rootQuery), this._block.getContent());
-        if(pk) this._block.props.pk = pk.replace('/','')
+        if (pk) {
+            this._block.props.pk = pk.replace('/', '');
+        }
+
         this._block.show();
     }
 }
 
 export class Router {
     private routes: Route[] = [];
+
     private history: any = window.history;
+
     private _currentRoute: null | Route;
+
     private _rootQuery: string;
+
     private static __instance: any;
 
     constructor(rootQuery) {
@@ -63,22 +77,22 @@ export class Router {
         Router.__instance = this;
     }
 
-    private _getPathnameAndPk(url:string) {
-        const pk = url.match(/:<(\S+)>/) ? url.match(/:<(\S+)>/)[1] : ''
-        const pathname = url.replace(/:<\S+>/,'').replace(/\/$/,'')
-        return {pk,pathname}
+    private _getPathnameAndPk(url: string) {
+        const pk = url.match(/:<(\S+)>/) ? url.match(/:<(\S+)>/)[1] : '';
+        const pathname = url.replace(/:<\S+>/, '').replace(/\/$/, '');
+        return {pk, pathname};
     }
 
-    // private _getPathnameFromUrl(url:string) {
-    //     find()
-    //     return {pk,pathname}
-    // }
-
-    use(url:string, block:Component):Router {
-        const {pk,pathname} = this._getPathnameAndPk(url)
-        const route: Route = new Route(pathname, block, {rootQuery: this._rootQuery},!!pk);
+    use(url: string, block: Component): Router {
+        const {pk, pathname} = this._getPathnameAndPk(url);
+        const route: Route = new Route(
+            pathname,
+            block,
+            {rootQuery: this._rootQuery},
+            Boolean(pk)
+        );
         this.routes.push(route);
-        return this
+        return this;
     }
 
     start = (): void => {
@@ -88,15 +102,16 @@ export class Router {
 
         this.history.pushState('', '', window.location.pathname);
         this._onRoute(window.location.pathname);
-    }
+    };
 
-
-    _onRoute(url:string):void {
-        let pk
-        const route = this.getRoute(url.replace(/\/$/,''),pk);
-        if(route.pk) {
-            pk = url.replace(route._pathname,'').replace('/','')
+    _onRoute(url: string): void {
+        let pk;
+        const route = this.getRoute(url.replace(/\/$/, ''), pk);
+        if (route.pk) {
+            pk = url.replace(route._pathname, '').replace('/', '');
         }
+
+        console.log(route, this._currentRoute, 'routes');
 
         this._currentRoute?.leave();
 
@@ -105,13 +120,13 @@ export class Router {
         route.render(pk);
     }
 
-    go(pathname:string, title:string = '') {
-        this.history.pushState({}, title, pathname)
-        this._onRoute(pathname)
+    go(pathname: string, title: string = '') {
+        this.history.pushState({}, title, pathname);
+        this._onRoute(pathname);
     }
 
-    getRoute(pathname:string,pk:string):Route {
-        const route = this.routes.find(route => route.match(pathname))
+    getRoute(pathname: string, pk: string): Route {
+        const route = this.routes.find(route => route.match(pathname));
 
         return route;
     }
